@@ -1,0 +1,41 @@
+SELECT
+    c360.sf_account_id, -- Explizit den Alias verwenden
+    c360.company_id,
+    c360.company_name,
+    c360.acc_owner,
+    sf_acc.account_owner_manager AS manager,
+    c360.budget_remaining_days,
+    c360.total_live_jobs_self AS external_jobs,
+    c360.purchase_decision_behavior,
+    c360.remaining_credit,
+    c360.booking_last_24_months,
+    c360.nr_of_job_live,
+    c360.rev_last_24_months,
+    c360.days_since_last_call_attempt,
+    c360.days_since_last_rev_generated,
+    c360.days_since_last_meeting_or_call
+FROM
+    snowplow.bi_analytics_dbt.c360_appsmith_main c360
+    LEFT JOIN snowplow.bi_analytics_dbt.stage_sf_accounts sf_acc 
+    ON c360.sf_account_id = sf_acc.sf_account_id
+WHERE
+    -- Option 1: Wenn eine accountId in der URL übergeben wird, filtere NUR danach.
+    (c360.sf_account_id = '{{ appsmith.URL.queryParams.accountId }}')
+    -- Option 2: Ansonsten (wenn keine accountId in der URL ist), wende die normalen Filter an.
+    OR (
+        '{{ !appsmith.URL.queryParams.accountId }}' = 'true'
+        AND (
+            {{ ModalAccFilter_RevenueBookings.isChecked ? `(c360.rev_last_24_months > 1 OR c360.booking_last_24_months > 1)` : `1=1` }}
+        )
+        AND (
+            ('{{ appsmith.store.userName }}' = '' AND sf_acc.account_owner_manager = '{{ appsmith.store.userTeam }}')
+            OR
+            (c360.acc_owner = '{{ appsmith.store.userName }}')
+        )
+        AND c360.purchase_decision_behavior IN ({{ ModalAccFilter_Purchase.selectedOptionValues.map(value => `'${value}'`).join(",") }})
+    )
+ORDER BY
+    CASE
+        WHEN '{{ !!appsmith.URL.queryParams.accountId }}' = 'true' THEN 1
+        ELSE c360.rev_last_24_months
+    END DESC;

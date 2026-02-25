@@ -1,0 +1,36 @@
+{{
+  (() => {
+    const query = {
+      "Live_At_Risk__c": AtRiskLive.isChecked,
+      "Live_At_Risk_Reasoning__c": AtRiskLiveReasoning.text,
+      "Live_At_Risk_Resolution_Details__c": AtRiskLiveResolution.text,
+      "Renewal_At_Risk__c": AtRiskRenewal.isChecked,
+      "Renewal_At_Risk_Reasoning__c": AtRiskRenewalReasoning.text,
+      "Renewal_At_Risk_Resolution_Details__c": AtRiskRenewalResolution.text
+    };
+
+    // Wenn AtRiskRenewalTS nicht leer ist und AtRiskRenewal true ist
+    if (AtRiskRenewalTS.text !== '' && AtRiskRenewal.isChecked) {
+      query["Timestamp_Renewal_At_Risk_Set_On__c"] = moment().toISOString();
+      query["Renewal_At_Risk_Trigger_Details__c"] = "Manual Trigger by Sales";
+    }
+
+    // Wenn AtRiskLiveTS nicht leer ist und AtRiskLive true ist
+    if (AtRiskLiveTS.text !== '' && AtRiskLive.isChecked) {
+      query["Timestamp_Live_At_Risk_Set_on__c"] = moment().toISOString();
+      query["Live_At_Risk_Trigger_Details__c"] = "Manual Trigger by Sales";
+    }
+
+    // Wenn AtRiskRenewalTS nicht leer ist und AtRiskRenewal false ist
+    if (AtRiskRenewalTS.text !== '' && !AtRiskRenewal.isChecked) {
+      query["Timestamp_Renewal_At_Risk_Resolved_On__c"] = moment().toISOString();
+    }
+
+    // Wenn AtRiskLiveTS nicht leer ist und AtRiskLive false ist
+    if (AtRiskLiveTS.text !== '' && !AtRiskLive.isChecked) {
+      query["Timestamp_Live_At_Risk_Resolved_On__c"] = moment().toISOString();
+    }
+
+    return query;
+  })()
+}}

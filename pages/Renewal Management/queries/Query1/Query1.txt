@@ -1,0 +1,23 @@
+SELECT
+    ren.opportunity_id,
+    ren.account_id,
+    ren.company_name                AS account_name,
+    ren.account_owner_name          AS account_owner,
+    ren.manager                     AS team_lead,
+    ren.account_owner_gtm_motion,
+    ren.booking_amount,
+    ren.product_type_v2             AS product_type,
+    ren.product_type_merged,
+    ren.renewal_status              AS final_outcome,       -- SOURCE OF TRUTH
+    ren.renewed_booking_amount      AS recovery_amount,
+    ren.renewed_booking_date,
+    ren.contract_start_date,
+    ren.contract_expired_date,
+    ren.booking_date,
+    ren.renewable_quarter,
+    ren.opportunity_stage,
+    ren.days_until_expiration
+FROM snowplow.bi_analytics_dbt.sf_opportunities_renewal ren
+WHERE ren.account_owner_gtm_motion IN ('Subscription Retention', 'Subscription Expansion')
+  AND ren.renewable_quarter = DATE_TRUNC('quarter', CURRENT_DATE)
+ORDER BY ren.account_id, ren.booking_date DESC;

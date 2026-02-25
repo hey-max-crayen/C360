@@ -1,0 +1,55 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "alignWidget": "LEFT",
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 34,
+  "defaultCheckedState": "{{  Array.isArray(GetAccountsSelected.data.records) \n    ? GetAccountsSelected.data.records.filter(\n        row => row.Id.trim() === Account_List.selectedRow.sf_account_id.trim()\n      )[0]?.Live_At_Risk__c || \"false\"\n    : \"false\"\n}}\n",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "defaultCheckedState"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [
+    {
+      "key": "defaultCheckedState"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": false,
+  "key": "ax68a15qcl",
+  "label": "",
+  "labelPosition": "Left",
+  "leftColumn": 50,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 8,
+  "mobileLeftColumn": 21,
+  "mobileRightColumn": 33,
+  "mobileTopRow": 4,
+  "needsErrorInfo": false,
+  "originalBottomRow": 30,
+  "originalTopRow": 30,
+  "parentColumnSpace": 15.03125,
+  "parentId": "t0vfrcmi4m",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 52,
+  "topRow": 30,
+  "type": "CHECKBOX_WIDGET",
+  "version": 1,
+  "widgetId": "seeq4tsqsm",
+  "widgetName": "AtRiskLiveOld"
+}

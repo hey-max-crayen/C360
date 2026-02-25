@@ -1,0 +1,10 @@
+{
+  "Subject": "{{ SF_Task_Input_Subject.text}}",
+  "Status": "Open",
+  "Priority": "High",
+  "OwnerId": "{{SF_Task_Input_Assigned.selectedOptionValue}}",
+  "WhatId": "{{SF_Task_Input_AccId.text}}",
+  "ActivityDate": "{{ SF_Task_Input_Date.selectedDate }}",
+  "Description": "{{ SF_Task_Input_Text.text }}"
+  // ,"Type": "NBA - Retention xxx" ---> Use Type field als label
+}

@@ -1,0 +1,111 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 18,
+  "boxShadow": "none",
+  "chartData": {
+    "jltdpc39w5": {
+      "data": "{{\n  Object.entries(\n    (Renewal_List.filteredTableData || Renewal_List.tableData || [])\n      .reduce((acc, r) => {\n        const k = (r.Status ?? '').toString().trim() || 'Unbekannt';\n        acc[k] = (acc[k] || 0) + 1;\n        return acc;\n      }, {})\n  )\n  .map(([x, y]) => ({\n    x,\n    y,\n    itemStyle: {\n      color: ({\n        'At Risk': '#ea4335',\n        'Low Risk': '#fbbc04',\n        'Closed Won': '#22b31e',\n        'Renewal Lost': '#A9A9A9'\n      }[x] || 'transparent')\n    }\n  }))\n  .sort((a,b) => b.y - a.y)\n}}\n",
+      "seriesName": ""
+    }
+  },
+  "chartName": "",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( \n(() => {\n  const raw = Renewal_List.filteredTableData || Renewal_List.tableData || [];\n  const start = new Date(ContractDateFrom.selectedDate);\n  const end = new Date(ContractDateTo.selectedDate);\n\n  // 1. Für jede opp_id: Vertrag mit spätestem contract_expired_date im Zeitraum\n  const latestContractByOpp = {};\n  raw.forEach(r => {\n    if (!r.opportunity_id || !r.contract_expired_date) return;\n    const date = new Date(r.contract_expired_date);\n    if (date < start || date > end) return;\n\n    if (\n      !latestContractByOpp[r.opportunity_id] ||\n      date > new Date(latestContractByOpp[r.opportunity_id].contract_expired_date)\n    ) {\n      latestContractByOpp[r.opportunity_id] = r;\n    }\n  });\n\n  // 2. Nutze den Status direkt aus der Tabelle\n  const deduped = Object.values(latestContractByOpp).map(r => {\n    const rawStatus = (r.Status ?? '').toString().trim();\n    \n    // Gleiche Logik wie linke Chart: Bei leerem Status days_until prüfen\n    let status;\n    if (!rawStatus) {\n      const daysUntil = r.days_until_expiration;\n      status = daysUntil <= 180 ? 'To Assess' : 'Upcoming';\n    } else {\n      status = rawStatus;\n    }\n    \n    return {\n      status: status,\n      booking_amount: parseFloat(r.booking_amount || 0),\n      renewed_booking_amount: parseFloat(r.renewed_booking_amount || 0)\n    };\n  }).filter(r => r.status !== 'Data Issue');  // ← DATA ISSUE RAUSFILTERN\n\n  // 3. Aggregiere nach Status\n  const aggregated = deduped.reduce((acc, r) => {\n    const key = r.status;\n    if (!acc[key]) {\n      acc[key] = { count: 0, amount: 0 };\n    }\n    acc[key].count += 1;\n    acc[key].amount += key === 'Closed Won' ? r.renewed_booking_amount : r.booking_amount;\n    return acc;\n  }, {});\n\n  const entriesSorted = Object.entries(aggregated)\n    .sort(([, a], [, b]) => b.count - a.count);\n\n  const labels = entriesSorted.map(([name]) => name);\n  const maxCount = Math.max(...entriesSorted.map(([, data]) => data.count));\n\n  const colors = {\n    'Upcoming': '#757575',       // Dunkleres Grau\n    'To Assess': '#BDBDBD',      // Hellgrau\n    'Low Risk': '#9ccc65',       // Hellgrün\n    'At Risk': '#e53935',        // Rot\n    'Closed Won': '#13734b',     // Dunkelgrün\n    'Renewal Lost': '#800020'    // Dunkelrot\n  };\n\n  const formatAmount = (amount) => {\n    if (amount >= 1000000) {\n      return `€${(amount / 1000000).toFixed(1)}M`;\n    } else if (amount >= 1000) {\n      return `€${(amount / 1000).toFixed(0)}k`;\n    } else {\n      return `€${amount.toFixed(0)}`;\n    }\n  };\n\n  const getTextColor = (status) => {\n    // Weiße Schrift für dunkle Farben\n    if (status === 'Closed Won' || status === 'Renewal Lost' || status === 'At Risk' || status === 'Upcoming') {\n      return '#fff';\n    }\n    // Schwarze Schrift für helle Farben\n    return '#000';\n  };\n\n  return {\n    tooltip: {\n      trigger: 'item'\n    },\n    grid: {\n      left: '30%',\n      right: '25%',\n      top: '5%',\n      bottom: '5%',\n      containLabel: false\n    },\n    xAxis: { type: 'value', show: false, max: maxCount },\n    yAxis: {\n      type: 'category',\n      show: true,\n      axisLine: { show: false },\n      axisTick: { show: false },\n      axisLabel: { show: true, color: '#333', fontSize: 12 },\n      data: labels\n    },\n    series: [{\n      type: 'bar',\n      label: {\n        show: true,\n        position: 'inside',\n        fontWeight: 'bold',\n        fontSize: 11\n      },\n      data: entriesSorted.map(([name, data]) => {\n        return {\n          value: data.count,\n          name,\n          label: {\n            color: getTextColor(name),\n            formatter: data.count.toString()\n          },\n          itemStyle: {\n            color: colors[name] || '#CCCCCC'\n          }\n        };\n      })\n    }, {\n      type: 'bar',\n      barGap: '-100%',\n      label: {\n        show: true,\n        position: 'right',\n        color: '#000',\n        fontWeight: 'bold',\n        fontSize: 11,\n        align: 'left',\n        offset: [5, 0]\n      },\n      data: entriesSorted.map(([name, data]) => {\n        const formattedAmount = formatAmount(data.amount);\n        return {\n          value: maxCount,\n          name,\n          label: {\n            formatter: `(${formattedAmount})`\n          },\n          itemStyle: {\n            color: 'transparent'\n          }\n        };\n      })\n    }]\n  };\n})()\n))(RiskChart.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "customEChartConfig"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.jltdpc39w5.data"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "4tnoev0v85",
+  "labelOrientation": "auto",
+  "leftColumn": 47,
+  "minWidth": 450,
+  "mobileBottomRow": 30,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 19,
+  "mobileTopRow": 0,
+  "needsErrorInfo": true,
+  "parentColumnSpace": 19.607421875,
+  "parentId": "rq9u5fm8i5",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "setAdaptiveYMin": false,
+  "showDataPointLabel": false,
+  "topRow": 0,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "b2nyj3nzo8",
+  "widgetName": "RiskChart",
+  "xAxisName": "",
+  "yAxisName": ""
+}

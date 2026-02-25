@@ -1,0 +1,54 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 10,
+  "boxShadow": "none",
+  "buttonColor": "#c4c4c4",
+  "buttonVariant": "TERTIARY",
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconName": "info-sign",
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": "{{ currentItem.is_q_dealbreaker }}",
+  "key": "0csv7538oy",
+  "leftColumn": 0,
+  "minWidth": 50,
+  "mobileBottomRow": 96,
+  "mobileLeftColumn": 30,
+  "mobileRightColumn": 34,
+  "mobileTopRow": 92,
+  "needsErrorInfo": false,
+  "onClick": "{{showModal(ModalInfroDropOff.name);}}",
+  "originalBottomRow": 103,
+  "originalTopRow": 99,
+  "parentColumnSpace": 11.3125,
+  "parentId": "km6pnk4f76",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "hug",
+  "rightColumn": 2,
+  "tooltip": "<b>Dealbreaker:</b>\nDies ist eine Dealbreakerfrage.  80% bedeutet z.B., dass 80 % aller Personen, die diese Frage beantwortet haben, die präferierte Antwort gegeben haben. Bei den übrigen 20% werden die Bewerbungen herausgefiltert, da sie die Frage zwar beantwortet haben, aber nicht mit der bevorzugten Antwort. Das ist am Ende der Unterschied zwischen „Application submitted\" und „sent\" (Bewerbungen, die immer die präferierte Antwort gegeben haben).",
+  "topRow": 6,
+  "type": "ICON_BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "q1gdnrhm80",
+  "widgetName": "IconButton12Copy"
+}

@@ -1,0 +1,6 @@
+SET TIME ZONE 'Europe/Berlin';
+
+UPDATE public."PerformanceAgentOutput"
+SET 
+  recommendation_status_job_location = {{this.params.status}}
+WHERE id = '{{CurrentAgentOutputID.text}}';

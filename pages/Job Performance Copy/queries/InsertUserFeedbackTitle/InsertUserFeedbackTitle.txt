@@ -1,0 +1,5 @@
+SET TIME ZONE 'Europe/Berlin';
+
+UPDATE public."PerformanceAgentOutput" 
+SET recommendation_status_job_title = 'Angewendet'
+WHERE id = {{CurrentAgentOutputID.text}};

@@ -1,0 +1,70 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "bottomRow": 16,
+  "defaultValue": "{{appsmith.store.InputVar1}}",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "defaultValue"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onChange"
+    }
+  ],
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "2eexf5drge",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelText": "Var1: Days since last Revenue",
+  "labelTextSize": "0.875rem",
+  "labelWidth": 8,
+  "leftColumn": 0,
+  "marks": [
+    {
+      "label": "25%",
+      "value": 25
+    },
+    {
+      "label": "50%",
+      "value": 50
+    },
+    {
+      "label": "75%",
+      "value": 75
+    }
+  ],
+  "max": 100,
+  "min": 0,
+  "mobileBottomRow": 69,
+  "mobileLeftColumn": 6,
+  "mobileRightColumn": 46,
+  "mobileTopRow": 61,
+  "needsErrorInfo": false,
+  "onChange": "{{Config.saveConfig();}}",
+  "originalBottomRow": 16,
+  "originalTopRow": 9,
+  "parentColumnSpace": 15.16748046875,
+  "parentId": "wdbp9kkf0b",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 31,
+  "shouldScroll": false,
+  "shouldTruncate": false,
+  "showMarksLabel": true,
+  "sliderSize": "m",
+  "step": 1,
+  "tooltipAlwaysOn": false,
+  "topRow": 9,
+  "type": "NUMBER_SLIDER_WIDGET",
+  "version": 1,
+  "widgetId": "0pd2lkr1gw",
+  "widgetName": "InputVar1"
+}

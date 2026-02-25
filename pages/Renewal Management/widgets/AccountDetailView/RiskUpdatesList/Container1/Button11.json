@@ -1,0 +1,58 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 4,
+  "boxShadow": "none",
+  "buttonColor": "#e0dede",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    },
+    {
+      "key": "tooltip"
+    },
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": "{{!!currentItem.risk_label}}\n",
+  "key": "tav9o0ibn2",
+  "leftColumn": 13,
+  "minWidth": 120,
+  "mobileBottomRow": 4,
+  "mobileLeftColumn": 12,
+  "mobileRightColumn": 28,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "parentColumnSpace": 5.1123046875,
+  "parentId": "ms5f5vck9t",
+  "parentRowSpace": 10,
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 39,
+  "text": "{{\n  (() => {\n    const category = RiskCategory.sourceData.find(cat => cat.code === currentItem.risk_label);\n    return category ? category.name : currentItem.risk_label;\n  })()\n}}\n",
+  "tooltip": "Risk Category: {{RiskCategory.sourceData.find(cat => cat.code === currentItem.risk_label)?.name || currentItem.risk_label}}\nStatus: {{currentItem.risk_status}}\n",
+  "topRow": 0,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "5mp0uerv8j",
+  "widgetName": "Button11"
+}

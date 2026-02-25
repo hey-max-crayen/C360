@@ -1,0 +1,66 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 5,
+  "boxShadow": "none",
+  "buttonColor": "{{ (GetAgentOutput.data && GetAgentOutput.data.length > 0) ? \"#a1a1a1\" : \"#c84182\" }}",
+  "buttonVariant": "{{ (GetAgentOutput.data && GetAgentOutput.data.length > 0) ? \"TERTIARY\" : \"PRIMARY\" }}",
+  "disabledWhenInvalid": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "buttonColor"
+    },
+    {
+      "key": "buttonVariant"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "isDisabled"
+    },
+    {
+      "key": "buttonColor"
+    },
+    {
+      "key": "buttonVariant"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "right",
+  "iconName": "send-message",
+  "isDefaultClickDisabled": true,
+  "isDisabled": "",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "yov1z5jqus",
+  "leftColumn": 47,
+  "minWidth": 120,
+  "mobileBottomRow": 9,
+  "mobileLeftColumn": 36,
+  "mobileRightColumn": 52,
+  "mobileTopRow": 5,
+  "needsErrorInfo": false,
+  "onClick": "{{TriggerJobAgent.run().then(() => {\n  showAlert('Der Agent wurde gestartet und das Ergebnis ist nach etwa 30 Sekunden verfügbar. Bitte klicke auf \"Refresh\" um das Ergebnis zu sehen.', '');\n});\nlogJobAgentTrigger.run()}}",
+  "parentColumnSpace": 8.8525390625,
+  "parentId": "ifu1phwe09",
+  "parentRowSpace": 10,
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 64,
+  "text": "Agent starten",
+  "topRow": 1,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "bz3768cjtw",
+  "widgetName": "StartAgent"
+}

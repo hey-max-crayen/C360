@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "67fe02ce08c30476df4545b1_ed48241c-ba7d-418e-8a87-c1db9aa8c88b",
+  "id": "Accounts_OnPageLoadOrder",
+  "unpublishedCollection": {
+    "name": "OnPageLoadOrder",
+    "pageId": "Accounts",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "borderRadius": "0.375rem",
+  "bottomRow": 4,
+  "boxShadow": "none",
+  "defaultOptionValue": "{{ ((options, serverSideFiltering) => ( appsmith.store.userMotion))(InputMotion.options, InputMotion.serverSideFiltering) }}",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "sourceData"
+    },
+    {
+      "key": "defaultOptionValue"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "onOptionChange"
+    },
+    {
+      "key": "sourceData"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onOptionChange"
+    },
+    {
+      "key": "onDropdownOpen"
+    }
+  ],
+  "isDisabled": false,
+  "isFilterable": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "778cpzs0j8",
+  "labelAlignment": "right",
+  "labelPosition": "Left",
+  "labelText": "Motion",
+  "labelTextSize": "0.875rem",
+  "labelWidth": "3",
+  "leftColumn": 11,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 7,
+  "mobileLeftColumn": 28,
+  "mobileRightColumn": 48,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "onDropdownOpen": "",
+  "onOptionChange": "{{storeValue(\"userMotion\", InputMotion.selectedOptionValue);storeValue(\"userTeam\", \"\");storeValue(\"userName\", \"\");InputTeam.setSelectedOption(\"\");InputName.setSelectedOption(\"\")}}",
+  "optionLabel": "value",
+  "optionValue": "value",
+  "originalBottomRow": 14,
+  "originalTopRow": 10,
+  "parentColumnSpace": 13.0625,
+  "parentId": "nykkvnldve",
+  "parentRowSpace": 10,
+  "placeholderText": "Motion Auswählen",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 22,
+  "serverSideFiltering": false,
+  "sourceData": "{{ \n  [...new Set(GetAllUsers2.data.output.records\n    .filter(p => p.GTM_Motion_User__c)\n    .map(p => \n      p.GTM_Motion_User__c === 'Subscription Expansion' || p.GTM_Motion_User__c === 'Subscription Retention'\n        ? 'Subscription ACM'\n        : p.GTM_Motion_User__c === 'Enterprise Expansion' || p.GTM_Motion_User__c === 'Enterprise Retention'\n          ? 'Enterprise'\n          : p.GTM_Motion_User__c\n    )\n  )].map(value => ({ label: value, value: value })) \n}}\n",
+  "topRow": 0,
+  "type": "SELECT_WIDGET",
+  "version": 1,
+  "widgetId": "i71rgticv5",
+  "widgetName": "InputMotion"
+}

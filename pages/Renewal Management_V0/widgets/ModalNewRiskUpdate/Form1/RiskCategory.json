@@ -1,0 +1,70 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 4,
+  "bottomRowBeforeCollapse": 4,
+  "boxShadow": "none",
+  "defaultOptionValue": "GREEN",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "sourceData"
+    },
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": false,
+  "isFilterable": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": "{{ ModalInputRiskStatus.selectedOptionValue === \"At Risk\" }}\n",
+  "key": "nz4zxu346h",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelText": "\"At Risk\" Kategorie",
+  "labelTextSize": "0.875rem",
+  "labelTooltip": "Was ist der Hauptgrund für deine Risikoeinschätzung",
+  "labelWidth": 5,
+  "leftColumn": 32,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 14,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 11,
+  "mobileTopRow": 7,
+  "needsErrorInfo": false,
+  "optionLabel": "name",
+  "optionValue": "code",
+  "originalBottomRow": 0,
+  "originalTopRow": 0,
+  "parentColumnSpace": 10.828125,
+  "parentId": "wjyil4ox81",
+  "parentRowSpace": 10,
+  "placeholderText": "Select option",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 61,
+  "serverSideFiltering": false,
+  "sourceData": "[\n  {\n    \"name\": \"Application Quantity\",\n    \"code\": \"APPLICATION_QUANTITY\"\n  },\n  {\n    \"name\": \"Application Quality\",\n    \"code\": \"APPLICATION_QUALITY\"\n  },\n  {\n    \"name\": \"Product Usability & Quality\",\n    \"code\": \"PRODUCT_USABILITY_QUALITY\"\n  },\n  {\n    \"name\": \"Feature Requests\",\n    \"code\": \"FEATURE_REQUESTS\"\n  },\n  {\n    \"name\": \"Mismatched Expectations\",\n    \"code\": \"MISMATCHED_EXPECTATIONS\"\n  },\n  {\n    \"name\": \"Poor Service & Support\",\n    \"code\": \"POOR_SERVICE_SUPPORT\"\n  },\n  {\n    \"name\": \"Negative Sales or Renewal Experience\",\n    \"code\": \"NEGATIVE_SALES_RENEWAL\"\n  },\n  {\n    \"name\": \"Cost Concerns\",\n    \"code\": \"COST_CONCERNS\"\n  },\n  {\n    \"name\": \"No Budget / Budget Cut\",\n    \"code\": \"NO_BUDGET_CUT\"\n  },\n  {\n    \"name\": \"No Hiring Need\",\n    \"code\": \"NO_HIRING_NEED\"\n  },\n  {\n    \"name\": \"New Decision-Maker / Restructuring\",\n    \"code\": \"NEW_DECISION_MAKER\"\n  },\n  {\n    \"name\": \"Low Engagement / Unresponsive\",\n    \"code\": \"LOW_ENGAGEMENT\"\n  },\n  {\n    \"name\": \"Other (Comment Required)\",\n    \"code\": \"OTHER_COMMENT_REQUIRED\"\n  }\n]\n",
+  "topRow": 0,
+  "topRowBeforeCollapse": 0,
+  "type": "SELECT_WIDGET",
+  "version": 1,
+  "widgetId": "idmxdyp6jf",
+  "widgetName": "RiskCategory"
+}

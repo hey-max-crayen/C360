@@ -1,0 +1,60 @@
+SELECT
+    -- job_title,
+		-- job_slot_redeemed_at,
+    -- job_slot_deactivated_at,
+    date_dt,
+		job_slot_days_live,
+		-- company_id,
+    -- company_name,
+    --account_owner_name,
+    -- account_owner_manager,
+    -- gtm_motion,
+    -- gtm_motion_account_owner,
+    -- product_type, -- only hire in the whole table!
+    job_slot_id,
+    -- job_id,
+    -- job_complexity_v2_level,
+    -- is_jobslot_running_now, 						-- important filter, Current_Date between job_slot_redeemed_at and job_slot_deactivated_at.
+    -- is_the_latest_avialable_day, 			-- important filter, use True to have only 1 last available day, not 30 days.
+    -- we also have in the table daily values, not running totals, but for the current stage we dont need them.
+    rt_applications_start,
+    rt_applications_submitted,
+    rt_applications_sent,
+    -- rt_gross_revenue, -- includes goodwill. But note that the rt_actual_croas uses rt_net_revenue, without Goodwill.
+    -- cpa_start_w_goodwill,
+    -- cpa_submit_w_goodwill,
+    -- cpa_sent_w_goodwill,
+
+    -- next two fields are used to calcualte the rt_actual_croas
+    -- rt_net_revenue,
+    -- rt_predicted_hire_value, -- this is a complicated marketing metric, you can read about it in Comfluence.
+    -- rt_actual_croas,  -- formula: rt_predicted_hire_value / rt_net_revenue:
+     scores_complexity_v2 -- THIS IS the scoring system, the final metric of the whole table.
+    
+    -- these fields are for the context, to understand how scores_complexity_v2 are assigned between 1-5:
+    -- perc_20_complexity_v2,
+    -- perc_40_complexity_v2,
+    -- perc_60_complexity_v2,
+    -- perc_80_complexity_v2,
+    -- only jobslots on the same job_slot_days_live from the same job_complexity_v2_level and
+    -- redeemed after min_redeemed_date_for_similar_jobslots and before job_slot_redeemed_at - 1 day
+    -- are considered as similar and used to calcualte the percentiles --> scores.
+    -- min_redeemed_date_for_similar_jobslots,
+
+    -- We will probably drop the next field in the real analysis! But Max wanted it.
+
+    -- Rank between similar jobslots, no grouping 1-5. Similar to scores_complexity_v2,
+    -- Same rt_actual_croas have same rt_actual_croas_ranking.
+    -- The logic of electing the similar jobslots is similar to the logic used for the scores_complexity_v2
+    -- With one exception. The min_redeemed_date_for_similar_jobslots of each jobslot is not used,
+    -- instead we use the min value of min_redeemed_date_for_similar_jobslots between is_jobslot_running_now.
+    -- it helps with the preformance. 
+    -- But the diff in logic to the is_jobslot_running_now is neglectable, no need to deep dive into it.
+    -- rt_actual_croas_ranking
+
+FROM
+	bi_analytics_dbt.daily_croas_scores
+WHERE
+	job_slot_id = {{Job_List.selectedRow.job_slot_id}}
+ORDER BY
+	job_slot_id, date_dt

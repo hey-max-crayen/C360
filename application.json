@@ -1,0 +1,101 @@
+{
+  "appIsExample": false,
+  "appLayout": {
+    "type": "FLUID"
+  },
+  "applicationDetail": {
+    "appPositioning": {
+      "type": "FIXED"
+    },
+    "navigationSetting": {
+      "colorStyle": "light",
+      "logoAssetId": "",
+      "logoConfiguration": "logoOnly",
+      "navStyle": "stacked",
+      "orientation": "top",
+      "position": "static",
+      "showNavbar": true,
+      "showSignIn": true
+    },
+    "themeSetting": {
+      "appMaxWidth": "LARGE",
+      "density": 1.0,
+      "sizing": 1.0
+    }
+  },
+  "applicationVersion": 2,
+  "collapseInvisibleWidgets": true,
+  "color": "#FFEFDB",
+  "embedSetting": {
+    "height": "720px",
+    "showNavigationBar": false,
+    "width": "1024px"
+  },
+  "evaluationVersion": 2,
+  "icon": "rocket",
+  "pages": [
+    {
+      "id": "Accounts",
+      "isDefault": true
+    },
+    {
+      "id": "C360 Usage",
+      "isDefault": false
+    },
+    {
+      "id": "TEST - Account",
+      "isDefault": false
+    },
+    {
+      "id": "Customer Acquisition",
+      "isDefault": false
+    },
+    {
+      "id": "Renewal Management_V0",
+      "isDefault": false
+    },
+    {
+      "id": "Job Performance",
+      "isDefault": false
+    },
+    {
+      "id": "Job Performance Copy",
+      "isDefault": false
+    },
+    {
+      "id": "Renewal Management_V1",
+      "isDefault": false
+    },
+    {
+      "id": "Renewal Management",
+      "isDefault": false
+    },
+    {
+      "id": "Renewal Management Copy",
+      "isDefault": false
+    }
+  ],
+  "unpublishedAppLayout": {
+    "type": "FLUID"
+  },
+  "unpublishedApplicationDetail": {
+    "appPositioning": {
+      "type": "FIXED"
+    },
+    "navigationSetting": {
+      "colorStyle": "light",
+      "logoAssetId": "",
+      "logoConfiguration": "logoOnly",
+      "navStyle": "stacked",
+      "orientation": "top",
+      "position": "static",
+      "showNavbar": true,
+      "showSignIn": true
+    },
+    "themeSetting": {
+      "appMaxWidth": "LARGE",
+      "density": 1.0,
+      "sizing": 1.0
+    }
+  }
+}

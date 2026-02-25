@@ -1,0 +1,114 @@
+WITH first_risk AS (
+    -- Erster Zeitpunkt, an dem eine Opp als "At Risk" markiert wurde
+    SELECT
+        opp_id,
+        MIN(submit_timestamp) AS first_at_risk_timestamp
+    FROM public."RenewalManagementRisk"
+    WHERE risk_status = 'At Risk'
+    GROUP BY opp_id
+),
+
+latest_risk AS (
+    -- Aktueller (neuester) Risk-Eintrag pro Opportunity
+    SELECT
+        opp_id,
+        risk_status       AS current_risk_status,
+        risk_label        AS current_risk_label,
+        submit_details    AS latest_risk_description,   -- Freitext
+        submit_user       AS latest_submit_user,
+        submit_timestamp  AS latest_update_timestamp
+    FROM (
+        SELECT
+            opp_id,
+            risk_status,
+            risk_label,
+            submit_details,
+            submit_user,
+            submit_timestamp,
+            ROW_NUMBER() OVER (PARTITION BY opp_id ORDER BY submit_timestamp DESC) AS rn
+        FROM public."RenewalManagementRisk"
+    ) ranked
+    WHERE rn = 1
+),
+
+first_risk_details AS (
+    -- Details des ERSTEN Risk-Eintrags (initiale Beschreibung / Label)
+    SELECT
+        opp_id,
+        risk_status       AS initial_risk_status,
+        risk_label        AS initial_risk_label,
+        submit_details    AS initial_risk_description,  -- Freitext
+        submit_user       AS initial_submit_user
+    FROM (
+        SELECT
+            opp_id,
+            risk_status,
+            risk_label,
+            submit_details,
+            submit_user,
+            submit_timestamp,
+            ROW_NUMBER() OVER (PARTITION BY opp_id ORDER BY submit_timestamp ASC) AS rn
+        FROM public."RenewalManagementRisk"
+    ) ranked
+    WHERE rn = 1
+),
+
+recovery AS (
+    -- Recovery = Wechsel von 'At Risk' zu 'Closed Won'
+    -- Closed Won wird nicht immer gepflegt, daher Fallback im Transformer auf renewed_booking_date
+    SELECT
+        r.opp_id,
+        MIN(r.submit_timestamp) AS recovery_timestamp
+    FROM public."RenewalManagementRisk" r
+    INNER JOIN first_risk fr
+        ON r.opp_id = fr.opp_id
+    WHERE r.risk_status = 'Closed Won'
+      AND r.submit_timestamp > fr.first_at_risk_timestamp
+    GROUP BY r.opp_id
+),
+
+risk_history_count AS (
+    SELECT
+        opp_id,
+        COUNT(*) AS total_risk_updates
+    FROM public."RenewalManagementRisk"
+    GROUP BY opp_id
+)
+
+SELECT
+    lr.opp_id,
+
+    -- Aktueller Risk-Status (aus PostgreSQL)
+    -- ⚠️ 'Closed Won' ist NICHT zuverlässig → wird im Transformer überschrieben
+    lr.current_risk_status,
+    lr.current_risk_label,
+    lr.latest_risk_description,
+    lr.latest_submit_user,
+    lr.latest_update_timestamp,
+
+    -- Initialer Risk-Eintrag
+    frd.initial_risk_status,
+    frd.initial_risk_label,
+    frd.initial_risk_description,
+    frd.initial_submit_user,
+
+    -- Zeitliche Metriken
+    fr.first_at_risk_timestamp,
+    rec.recovery_timestamp,
+    EXTRACT(EPOCH FROM (rec.recovery_timestamp - fr.first_at_risk_timestamp)) / 86400
+        AS days_to_recovery,
+
+    -- Kontext
+    rhc.total_risk_updates
+
+FROM latest_risk lr
+LEFT JOIN first_risk fr
+    ON lr.opp_id = fr.opp_id
+LEFT JOIN first_risk_details frd
+    ON lr.opp_id = frd.opp_id
+LEFT JOIN recovery rec
+    ON lr.opp_id = rec.opp_id
+LEFT JOIN risk_history_count rhc
+    ON lr.opp_id = rhc.opp_id
+
+ORDER BY fr.first_at_risk_timestamp DESC;

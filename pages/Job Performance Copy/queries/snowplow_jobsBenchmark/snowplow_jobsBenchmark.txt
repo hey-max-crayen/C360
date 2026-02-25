@@ -1,0 +1,80 @@
+SELECT
+  -- Dynamische Gruppierungsfelder basierend auf SelectAverageType
+  {{SelectAverageType.selectedOptionValue === "complexity" ? "c.job_complexity_v2_level" : 
+    SelectAverageType.selectedOptionValue === "jobtype" ? "job_totals.kldb_jobtype" : 
+    "job_totals.kldb_jobtype || ' - ' || job_totals.location_city"}} AS grouping_field,
+  
+  COUNT(DISTINCT job_totals.job_slot_id) AS benchmark_jobs_count,
+  AVG(job_totals.total_impressions) AS avg_impressions,
+  AVG(job_totals.total_pageviews) AS avg_pageviews,
+  AVG(job_totals.total_app_start) AS avg_app_start,
+  AVG(job_totals.total_app_submit) AS avg_app_submit,
+  AVG(job_totals.total_app_sent) AS avg_app_sent,
+  AVG(job_totals.total_gold_app) AS avg_gold_app,
+  AVG(job_totals.total_hires) AS avg_total_hires,
+  AVG(job_totals.days_live) AS avg_days_live,
+  
+  -- Conversion Rates (basierend auf Job-Gesamtwerten)
+  AVG(CASE WHEN job_totals.total_impressions > 0 THEN (job_totals.total_pageviews * 100.0 / job_totals.total_impressions) END) AS avg_ctr_percent,
+  AVG(CASE WHEN job_totals.total_pageviews > 0 THEN (job_totals.total_app_start * 100.0 / job_totals.total_pageviews) END) AS avg_app_start_rate,
+  AVG(CASE WHEN job_totals.total_app_start > 0 THEN (job_totals.total_app_submit * 100.0 / job_totals.total_app_start) END) AS avg_completion_rate,
+  AVG(CASE WHEN job_totals.total_app_submit > 0 THEN (job_totals.total_app_sent * 100.0 / job_totals.total_app_submit) END) AS avg_qualification_rate,
+  AVG(CASE WHEN job_totals.total_app_sent > 0 THEN (job_totals.total_gold_app * 100.0 / job_totals.total_app_sent) END) AS avg_gold_rate,
+  AVG(CASE WHEN job_totals.total_gold_app > 0 THEN (job_totals.total_hires * 100.0 / job_totals.total_gold_app) END) AS avg_hire_rate
+
+FROM (
+  SELECT
+    m.job_slot_id,
+    m.job_id,
+    m.kldb_jobtype,
+    m.location_city,
+    SUM(m.impressions) AS total_impressions,
+    SUM(m.pageviews) AS total_pageviews,
+    SUM(m.active_application_start_count + m.passive_application_start_count) AS total_app_start,
+    SUM(m.active_application_submit_count + m.passive_application_submit_count) AS total_app_submit,
+    SUM(m.active_application_sent_count + m.passive_application_sent_count) AS total_app_sent,
+    SUM(m.gold_application_count) AS total_gold_app,
+    SUM(m.hires_count) AS total_hires,
+    MAX(m.job_slot_days_live) AS days_live
+  FROM rds.rep_job_metrics m
+  WHERE m.job_id != {{Job_List.selectedRow.job_id}}
+    AND job_slot_days_live <= {{Job_List.selectedRow.job_slot_days_live}}
+		AND product_type = 'Hire'
+  GROUP BY m.job_slot_id, m.job_id, m.kldb_jobtype, m.location_city
+) job_totals
+
+-- Join mit CROAS nur wenn complexity ausgewählt ist
+{{SelectAverageType.selectedOptionValue === "complexity" ? 
+  "INNER JOIN bi_analytics_dbt.daily_croas_scores c ON job_totals.job_slot_id = c.job_slot_id" : 
+  "LEFT JOIN bi_analytics_dbt.daily_croas_scores c ON job_totals.job_slot_id = c.job_slot_id"}}
+
+-- Join mit dem aktuellen Job um das Grouping Field zu bestimmen
+INNER JOIN (
+  SELECT 
+    {{SelectAverageType.selectedOptionValue === "complexity" ? "c_current.job_complexity_v2_level" : 
+      SelectAverageType.selectedOptionValue === "jobtype" ? "m_current.kldb_jobtype" : 
+      "m_current.kldb_jobtype || ' - ' || m_current.location_city"}} AS current_grouping_field
+  FROM rds.rep_job_metrics m_current
+  {{SelectAverageType.selectedOptionValue === "complexity" ? 
+    "INNER JOIN bi_analytics_dbt.daily_croas_scores c_current ON m_current.job_slot_id = c_current.job_slot_id" : ""}}
+  WHERE m_current.job_slot_id = {{Job_List.selectedRow.job_slot_id}}
+  LIMIT 1
+) current_job ON (
+  {{SelectAverageType.selectedOptionValue === "complexity" ? "c.job_complexity_v2_level" : 
+    SelectAverageType.selectedOptionValue === "jobtype" ? "job_totals.kldb_jobtype" : 
+    "job_totals.kldb_jobtype || ' - ' || job_totals.location_city"}} = current_job.current_grouping_field
+)
+
+WHERE 
+  job_totals.total_impressions > 0  -- Nur Jobs mit Aktivität
+  {{SelectAverageType.selectedOptionValue === "complexity" ? 
+    "AND c.is_jobslot_running_now = false AND COALESCE(c.job_slot_redeemed_at, c.job_slot_deactivated_at) BETWEEN CURRENT_DATE - INTERVAL '6 months' AND CURRENT_DATE" : 
+    ""}}
+GROUP BY 
+  {{SelectAverageType.selectedOptionValue === "complexity" ? "c.job_complexity_v2_level" : 
+    SelectAverageType.selectedOptionValue === "jobtype" ? "job_totals.kldb_jobtype" : 
+    "job_totals.kldb_jobtype, job_totals.location_city"}}
+ORDER BY 
+  {{SelectAverageType.selectedOptionValue === "complexity" ? "c.job_complexity_v2_level" : 
+    SelectAverageType.selectedOptionValue === "jobtype" ? "job_totals.kldb_jobtype" : 
+    "job_totals.kldb_jobtype, job_totals.location_city"}};

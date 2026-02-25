@@ -1,0 +1,113 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 67,
+  "boxShadow": "none",
+  "chartData": {
+    "wbjonzfhm7": {
+      "color": "#c84182",
+      "data": "{{\n  (() => {\n    // Schritt 1: Filtere die Daten aus Chart1 basierend auf den Bedingungen\n    const records = Chart.tableData\n      .filter(p => p.company_name === SelectAccount.selectedOptionValue); // Account-Filter hinzufügen\n\n    // Schritt 2: Zeitraum bestimmen (minDate aus Daten, maxDate als aktueller Monat)\n    const dates = records.map(p => new Date(p.month));\n    const minDate = new Date(Math.min(...dates));\n    const maxDate = new Date(); // Aktueller Monat\n\n    // Schritt 3: Alle Monate zwischen minDate und maxDate generieren\n    const allMonths = [];\n    let current = new Date(minDate.getFullYear(), minDate.getMonth(), 1);\n    while (current <= maxDate) {\n      allMonths.push(current.getFullYear() + '-' + (current.getMonth() + 1).toString().padStart(2, '0'));\n      current.setMonth(current.getMonth() + 1); // Zum nächsten Monat wechseln\n    }\n\n    // Schritt 4: Daten gruppieren und summieren\n    const groupedData = records.reduce((acc, p) => {\n      const month = new Date(p.month).getFullYear() + '-' + (new Date(p.month).getMonth() + 1).toString().padStart(2, '0');\n      if (!acc[month]) acc[month] = 0;\n      acc[month] += p.booking; // Summiere die booking-Werte\n      return acc;\n    }, {});\n\n    // Schritt 5: Alle Monate sicherstellen und fehlende mit 0 auffüllen\n    return allMonths.map(month => ({\n      x: month,\n      y: groupedData[month] || 0 // Falls kein Wert existiert, setze 0\n    }));\n  })()\n}}\n",
+      "seriesName": "Bookings"
+    }
+  },
+  "chartName": "",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( ChartDataProcessor.options()))(Chart.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "customEChartConfig"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.wbjonzfhm7.data"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "nsg8ux0c4k",
+  "labelOrientation": "auto",
+  "leftColumn": 0,
+  "minWidth": 450,
+  "mobileBottomRow": 49,
+  "mobileLeftColumn": 28,
+  "mobileRightColumn": 52,
+  "mobileTopRow": 17,
+  "needsErrorInfo": true,
+  "originalBottomRow": 67,
+  "originalTopRow": 33,
+  "parentColumnSpace": 20.21875,
+  "parentId": "q09i6l4jnm",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "showDataPointLabel": true,
+  "topRow": 33,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "nghwvzdik3",
+  "widgetName": "Chart",
+  "xAxisName": "Month",
+  "yAxisName": "Bookings"
+}

@@ -1,0 +1,5 @@
+SELECT
+	*
+FROM
+	snowplow.bi_analytics_dbt.stage_account_revenue_gaps
+LIMIT 10;

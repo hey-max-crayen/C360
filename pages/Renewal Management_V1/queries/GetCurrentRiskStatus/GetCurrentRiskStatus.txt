@@ -1,0 +1,18 @@
+WITH ranked_risks AS (
+  SELECT 
+    opp_id,
+    risk_status,
+    id,
+    submit_timestamp,
+    ROW_NUMBER() OVER (PARTITION BY opp_id ORDER BY submit_timestamp DESC) as rn
+  FROM public."RenewalManagementRisk"
+)
+SELECT 
+  opp_id,
+  risk_status,
+  id,
+  submit_timestamp,
+  rn
+FROM ranked_risks 
+WHERE rn <= 4
+ORDER BY opp_id, submit_timestamp DESC;

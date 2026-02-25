@@ -1,0 +1,49 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 40,
+  "boxShadow": "none",
+  "buttonColor": "#22c55e",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": true,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "left",
+  "iconName": "plus",
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "fzb3gxlk8q",
+  "leftColumn": 49,
+  "minWidth": 120,
+  "mobileBottomRow": 37,
+  "mobileLeftColumn": 46,
+  "mobileRightColumn": 62,
+  "mobileTopRow": 33,
+  "needsErrorInfo": false,
+  "onClick": "{{PostTask.run().then(() => {\n  showAlert('✅ Accounts erfolgreich geladen', '');\n}).catch(() => {\n  showAlert('❌ Laden der Revenuedaten fehlgeschlagen', '');\n});}}",
+  "originalBottomRow": 40,
+  "originalTopRow": 36,
+  "parentId": "7zyx4x4i3y",
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": true,
+  "responsiveBehavior": "hug",
+  "rightColumn": 64,
+  "text": "Task in SF erstellen",
+  "topRow": 36,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "54zajdft0z",
+  "widgetName": "Button11Copy"
+}

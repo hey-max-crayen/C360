@@ -1,0 +1,52 @@
+SELECT DISTINCT
+    fp.purchase_id,
+    fp.company_id,
+    acc.account__owner_s__manager__c AS manager, -- Manager aus der neuen Tabelle
+    fp.remaining_total_eur,
+    -- Kombinierte Spalte für den Typ
+    CASE 
+        WHEN fp.product_type = 'Reach' THEN 'Reach'
+        WHEN fp.is_heypakete = TRUE THEN CONCAT('Heypaket - ', fp.heypakete_status)
+        WHEN fp.is_annual_contract = TRUE THEN '12M contract'
+        ELSE 'Hire'
+    END AS contract_type,
+    fp.booking_amount_eur + fp.goodwill_amount_eur AS total_booking_amount,
+    -- Angepasste Buchungszeit (booking_dt oder heypakete_start_date)
+    CASE 
+        WHEN fp.heypakete_start_date IS NOT NULL THEN fp.heypakete_start_date
+        ELSE fp.booking_dt
+    END AS effective_booking_date,
+    fp.redeemable_until_ts,
+    -- Verbleibende Tage
+    EXTRACT(DAY FROM (fp.redeemable_until_ts::TIMESTAMP - CURRENT_DATE::TIMESTAMP)) AS days_left,
+    -- Gesamtdauer der Laufzeit
+    EXTRACT(DAY FROM (fp.redeemable_until_ts::TIMESTAMP - 
+        (CASE 
+            WHEN fp.heypakete_start_date IS NOT NULL THEN fp.heypakete_start_date
+            ELSE fp.booking_dt
+        END)::TIMESTAMP)) AS total_days,
+    -- Run Rate (Prozent verbleibend, ohne Dezimalstellen)
+    FLOOR(
+        100 * (
+            (fp.booking_amount_eur + fp.goodwill_amount_eur) - 
+            (((fp.booking_amount_eur + fp.goodwill_amount_eur - fp.remaining_total_eur) 
+                / NULLIF(EXTRACT(DAY FROM (CURRENT_DATE::TIMESTAMP - 
+                    (CASE 
+                        WHEN fp.heypakete_start_date IS NOT NULL THEN fp.heypakete_start_date
+                        ELSE fp.booking_dt
+                    END)::TIMESTAMP)), 0)) 
+                * EXTRACT(DAY FROM (fp.redeemable_until_ts::TIMESTAMP - 
+                    (CASE 
+                        WHEN fp.heypakete_start_date IS NOT NULL THEN fp.heypakete_start_date
+                        ELSE fp.booking_dt
+                    END)::TIMESTAMP)))
+        ) / NULLIF(fp.booking_amount_eur + fp.goodwill_amount_eur, 0)
+    ) AS run_rate
+FROM
+    cds.fact_purchase fp
+JOIN
+    snowplow.gold_zone_salesforce_s3.account acc -- Neue Tabelle für Manager-Infos
+    ON fp.company_id = acc.txt_company_id__c -- Korrekte Spalte verwenden
+WHERE
+    fp.remaining_total_eur > 1
+		AND fp.company_id = {{ Account_List.selectedRow.company_id }}

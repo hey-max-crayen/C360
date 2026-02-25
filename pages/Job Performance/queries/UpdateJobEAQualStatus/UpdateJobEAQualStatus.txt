@@ -1,0 +1,6 @@
+SET TIME ZONE 'Europe/Berlin';
+
+UPDATE public."PerformanceAgentOutput"
+SET 
+  recommendations_status_quality_easy_apply = {{this.params.status}}
+WHERE id = '{{CurrentAgentOutputID.text}}';

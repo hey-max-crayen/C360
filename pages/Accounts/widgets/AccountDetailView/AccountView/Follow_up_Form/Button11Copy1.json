@@ -1,0 +1,63 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 8,
+  "bottomRowBeforeCollapse": 8,
+  "boxShadow": "none",
+  "buttonColor": "#009edb",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": true,
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "buttonColor"
+    },
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "right",
+  "iconName": "cloud-upload",
+  "isDefaultClickDisabled": true,
+  "isDisabled": "{{!Follow_up_Form.hasChanges}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "sr8x2jgjgy",
+  "leftColumn": 47,
+  "minWidth": 120,
+  "mobileBottomRow": 37,
+  "mobileLeftColumn": 46,
+  "mobileRightColumn": 62,
+  "mobileTopRow": 33,
+  "needsErrorInfo": false,
+  "onClick": "{{SFDC_update_acc_followup2.run().then(() => {\n  GetAccounts2.run();\n  GetAccountSelected2.run();\n}).catch(() => {});}}",
+  "originalBottomRow": 9,
+  "originalTopRow": 5,
+  "parentId": "c93cmxr09m",
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": true,
+  "responsiveBehavior": "hug",
+  "rightColumn": 64,
+  "text": "speichern",
+  "tooltip": "Die Daten werden in Salesforce gespeichert. Damit das Speichern möglich ist, müssen Änderungen vorgenommen worden sein und beide Felder müssen ausgefüllt sein.",
+  "topRow": 4,
+  "topRowBeforeCollapse": 4,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "cyt9wqg7oq",
+  "widgetName": "Button11Copy1"
+}

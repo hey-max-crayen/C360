@@ -1,0 +1,72 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "borderRadius": "0.375rem",
+  "bottomRow": 4,
+  "boxShadow": "none",
+  "defaultOptionValue": "{{ ((options, serverSideFiltering) => ( appsmith.store.userName))(InputName.options, InputName.serverSideFiltering) }}",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "sourceData"
+    },
+    {
+      "key": "defaultOptionValue"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "sourceData"
+    },
+    {
+      "key": "onOptionChange"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onOptionChange"
+    }
+  ],
+  "isDisabled": false,
+  "isFilterable": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "778cpzs0j8",
+  "labelAlignment": "right",
+  "labelPosition": "Left",
+  "labelText": "Account Owner",
+  "labelTextSize": "0.875rem",
+  "labelWidth": "5",
+  "leftColumn": 34,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 7,
+  "mobileLeftColumn": 28,
+  "mobileRightColumn": 48,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "onOptionChange": "{{storeValue(\"userName\", InputName.selectedOptionValue);}}",
+  "optionLabel": "value",
+  "optionValue": "value",
+  "originalBottomRow": 10,
+  "originalTopRow": 6,
+  "parentColumnSpace": 13.0625,
+  "parentId": "kyo9btjrqk",
+  "parentRowSpace": 10,
+  "placeholderText": "Person Auswählen",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 48,
+  "serverSideFiltering": false,
+  "sourceData": "{{\n  (() => {\n    const users = GetAllUsers2.data.output.records\n      .filter(p => p.Name && p.Manager_reports__c === appsmith.store.userTeam)\n      .map(p => p.Name);\n    \n    const uniqueUsers = [...new Set(users)];\n    \n    // Füge den aktuellen userTeam hinzu (Sandra selbst)\n    if (appsmith.store.userTeam && !uniqueUsers.includes(appsmith.store.userTeam)) {\n      uniqueUsers.push(appsmith.store.userTeam);\n    }\n    \n    return uniqueUsers.map(value => ({ label: value, value: value }));\n  })()\n}}\n",
+  "topRow": 0,
+  "type": "SELECT_WIDGET",
+  "version": 1,
+  "widgetId": "i0i0950mun",
+  "widgetName": "InputName"
+}

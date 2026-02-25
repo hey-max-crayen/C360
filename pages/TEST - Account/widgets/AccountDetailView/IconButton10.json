@@ -1,0 +1,43 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 5,
+  "boxShadow": "none",
+  "buttonColor": "#009edb",
+  "buttonVariant": "TERTIARY",
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconName": "cloud",
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "v0kj1smx0m",
+  "leftColumn": 50,
+  "minWidth": 50,
+  "mobileBottomRow": 4,
+  "mobileLeftColumn": 50,
+  "mobileRightColumn": 54,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "onClick": "{{navigateTo('https://heyjobs.lightning.force.com/lightning/r/Account/' + Account_List.selectedRow.sf_account_id + '/view', {}, 'NEW_WINDOW');}}",
+  "parentColumnSpace": 8.68359375,
+  "parentId": "lbmtf9ftin",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "hug",
+  "rightColumn": 54,
+  "tooltip": "Salesforce in einem neuen Fenster öffnen",
+  "topRow": 1,
+  "type": "ICON_BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "j6ya1qw47c",
+  "widgetName": "IconButton10"
+}

@@ -1,0 +1,33 @@
+WITH credits_per_purchase AS (
+    SELECT
+        rep_acc.company_id,
+        rep_acc.purchase_id,
+        rep_acc.account_owner_name, -- of a company_id (not opp_id)
+        dc.sf_account_id, -- Salesforce Account ID aus der dim_company Tabelle
+        dc.account_owner_manager,
+        TO_CHAR(DATE_TRUNC('month', rep_acc.date), 'YYYY.MM.DD') AS month,
+        ROUND(SUM(rep_acc.booking_amount_eur + rep_acc.goodwill_booking_amount_eur), 0) AS booking_amount_incl_gw,
+        ROUND(SUM(rep_acc.total_paid_credit_used_eur + rep_acc.total_goodwill_credit_used_eur), 0) AS total_credit_used_incl_gw,
+        ROUND(COALESCE(MIN(rep_acc.remaining_total_credit_eur), 0)) AS remaining_credit_incl_gw
+    FROM
+        snowplow.rds.rep_accounting AS rep_acc
+    LEFT JOIN bds.dim_company AS dc ON rep_acc.company_id = dc.company_id -- Verknüpfung der Tabellen
+    WHERE 
+        rep_acc.date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '36 months' -- Zeitraum auf 36 Monate beschränken
+        AND CURRENT_DATE
+    GROUP BY 1, 2, 3, 4, 5, 6
+    ORDER BY month
+)
+
+SELECT
+    company_id,
+    account_owner_name,
+    account_owner_manager,
+    month,
+    SUM(booking_amount_incl_gw) AS booking,
+    SUM(total_credit_used_incl_gw) AS total_credit_used,
+    SUM(remaining_credit_incl_gw) AS remaining_total_credit
+FROM credits_per_purchase
+WHERE 
+    company_id = {{ Renewal_List.selectedRow.company_id }}
+GROUP BY 1, 2, 3, 4;

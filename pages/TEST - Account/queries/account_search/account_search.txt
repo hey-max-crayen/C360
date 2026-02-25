@@ -1,0 +1,27 @@
+-- Name: account_search
+SELECT 
+    id,
+    name,
+    txt_company_id__c as company_id,
+    name || ' (' || id || ')' as display_name  -- Snowflake Syntax
+FROM snowplow.gold_zone_salesforce_s3.account 
+WHERE 
+    record__type__c = 'Sales'
+		AND last__activity__c != ''
+		AND LENGTH('{{ Select_AccountSearch.filterText || "" }}') >= 3
+    AND (
+        LOWER(name) LIKE LOWER('%{{ Select_AccountSearch.filterText || "" }}%')
+        OR LOWER(id) LIKE LOWER('%{{ Select_AccountSearch.filterText || "" }}%')
+        OR LOWER(txt_company_id__c) LIKE LOWER('%{{ Select_AccountSearch.filterText || "" }}%')
+    )
+    AND test__account__c IS FALSE
+    AND blacklist__c IS FALSE
+    AND bankrupt__c IS FALSE
+ORDER BY 
+    CASE 
+        WHEN LOWER(name) LIKE LOWER('{{ Select_AccountSearch.filterText || "" }}%') THEN 1
+        WHEN LOWER(id) = LOWER('{{ Select_AccountSearch.filterText || "" }}') THEN 2
+        ELSE 3 
+    END,
+    name
+LIMIT 15;

@@ -1,0 +1,50 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 88,
+  "boxShadow": "{{appsmith.theme.boxShadow.appBoxShadow}}",
+  "defaultText": "<h1>Risk Rating & Classification Definitionen</h1>\n\n<h2>📊 Risk Rating Status</h2>\n\n<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\" style=\"width:100%; border-collapse: collapse;\">\n  <thead>\n    <tr style=\"background-color: #f0f0f0;\">\n      <th style=\"width: 20%;\">Status</th>\n      <th style=\"width: 40%;\">Definition</th>\n      <th style=\"width: 40%;\">Indikatoren</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><strong>🟢 Low Risk</strong></td>\n      <td>Bewertung zeigt hohe Wahrscheinlichkeit einer Verlängerung <strong>(>70% Confidence) </strong>. Starke positive Signale und Kundenbindung vorhanden.</td>\n      <td>\n        • Mündliche Verlängerungszusage erhalten<br>\n        • Reibungslose Verlängerungshistorie<br>\n        • Hohe Kundenzufriedenheitswerte (z.b. NPS, CSAT) <br>\n        • Starke Nutzungsmetriken (Booking Usage Run Rate >95%)\n      </td>\n    </tr>\n    <tr>\n      <td><strong>🔴 At Risk</strong></td>\n      <td>Bewertung zeigt niedrige Wahrscheinlichkeit einer Verlängerung <strong>(<70% Confidence)</strong>. Klare Warnsignale vorhanden, die dringende gezielte Interventionen erfordern.</td>\n      <td>\n        • Signifikante Performance-Probleme identifiziert<br>\n        • Booking Usage Run Rate <95%<br>\n        • Kunde äußert Budgetbeschränkungen<br>\n        • Kunde reagiert nicht auf Kontaktversuche (\"Ghosting\")<br>\n        • <30 Tage bis Vertragsende ohne Fortschritt<br>\n        • Explizites negatives Kundenfeedback (z.b. NPS, CSAT)\n      </td>\n    </tr>\n    <tr>\n        <td><strong>⚫ Renewal Lost</strong></td>\n  <td>Renewal wird als verloren eingestuft nach bilateraler Absprache zwischen TL und ML sowie finaler ML-Freigabe (Sign-Off). Der Kunde hat definitiv signalisiert, nicht zu verlängern, oder alle vernünftigen Interventionsversuche sind nachweislich gescheitert.</td>\n  <td>\n    • Kunde hat Verlängerung explizit abgelehnt<br>\n    • Mehrere eskalierte Kontaktversuche fehlgeschlagen<br>\n    • Nicht reaktionsfähig trotz umfassender Kontaktversuche<br>\n    • Alle Schadensbegrenzungsstrategien ausgeschöpft<br>\n    • Keine realistische Chance innerhalb des Renewal-Zeitrahmens\n  </td>\n    </tr>\n  </tbody>\n</table>\n\n<hr>\n\n<h2>🎯 Risk Classification - Spezifische Risk Drivers</h2>\n\n<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\" style=\"width:100%; border-collapse: collapse;\">\n  <thead>\n    <tr style=\"background-color: #f0f0f0;\">\n      <th style=\"width: 30%;\">Classification</th>\n      <th style=\"width: 40%;\">Definition</th>\n      <th style=\"width: 30%;\">Beispiele</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><strong>📉 Application Quantity</strong></td>\n      <td>Die Beschwerde des Kunden bezieht sich auf die Anzahl der Bewerbungen, oder die Erwartungen an Endergebnisse/ROI (bezogen auf Quantität) wurden nicht erfüllt.</td>\n      <td>• Keine Bewerbungen erhalten<br>• Zu wenige Bewerbungen erhalten</td>\n    </tr>\n    <tr>\n      <td><strong>👥 Application Quality</strong></td>\n      <td>Der Kunde ist unzufrieden damit, wer die Kandidaten sind, oder die Erwartungen an Endergebnisse/ROI (bezogen auf Qualität) wurden nicht erfüllt.</td>\n      <td>• Unqualifizierte Kandidaten<br>• Kandidaten-Ghosting</td>\n    </tr>\n    <tr>\n      <td><strong>🖥️ Product Usability & Quality</strong></td>\n      <td>Der Kunde empfindet die Plattform als schwierig zu bedienen oder fehlerhaft.</td>\n      <td>• Schwierig zu bedienen<br>• Technische Probleme<br>• Probleme mit Vorauswahlfragen</td>\n    </tr>\n    <tr>\n      <td><strong>⚙️ Feature Requests</strong></td>\n      <td>Eine fehlende Funktion stellt ein Risiko dar.</td>\n      <td>• Bestimmte ATS-Integration fehlt<br>• Gewünschte Funktionalität nicht verfügbar</td>\n    </tr>\n    <tr>\n      <td><strong>❌ Mismatched Expectations</strong></td>\n      <td>Der Kunde hat missverstanden, wie der Service funktioniert oder was seine Funktionen sind.</td>\n      <td>• \"Ich dachte, Sie würden jeden Kandidaten prüfen\"<br>• Erwartung an Service-Umfang war anders</td>\n    </tr>\n    <tr>\n      <td><strong>🤝 Poor Service & Support</strong></td>\n      <td>Probleme mit der allgemeinen Beziehung oder der Support-Qualität.</td>\n      <td>• Nicht reaktionsfähiger Support<br>• Nicht hilfreicher Support<br>• Schlechtes Erwartungsmanagement</td>\n    </tr>\n    <tr>\n      <td><strong>📝 Negative Sales or Renewal Experience</strong></td>\n      <td>Reibungen während des Vertragsprozesses.</td>\n      <td>• Schlechte Übergabe vom Vertrieb<br>• Verlängerungsverhandlung unter Druck</td>\n    </tr>\n    <tr>\n      <td><strong>💰 Cost Concerns</strong></td>\n      <td>Das Hauptproblem des Kunden ist der Preis der Dienstleistung.</td>\n      <td>• Preiserhöhung zu hoch<br>• Preis-Leistungs-Verhältnis passt nicht</td>\n    </tr>\n    <tr>\n      <td><strong>🚫 No Budget / Budget Cut</strong></td>\n      <td>Die Entscheidung des Kunden ist rein finanziell bedingt.</td>\n      <td>• Budgetkürzungen<br>• Ausgabenstopp</td>\n    </tr>\n    <tr>\n      <td><strong>🛑 No Hiring Need</strong></td>\n      <td>Der Kunde hat keinen Personalbedarf mehr.</td>\n      <td>• Einstellungsstopp<br>• Alle Stellen besetzt</td>\n    </tr>\n    <tr>\n      <td><strong>🔄 New Decision-Maker / Restructuring</strong></td>\n      <td>Der Hauptansprechpartner hat das Unternehmen verlassen oder das Unternehmen strukturiert sich um.</td>\n      <td>• Neuer Entscheider<br>• Organisatorische Umstrukturierung</td>\n    </tr>\n    <tr>\n      <td><strong>👻 Low Engagement / Unresponsive</strong></td>\n      <td>Der Kunde \"ghosted\" das Team und macht eine Kommunikation unmöglich.</td>\n      <td>• Keine Antwort auf E-Mails<br>• Meetings werden wiederholt abgesagt</td>\n    </tr>\n    <tr>\n      <td><strong>📌 Other</strong></td>\n      <td>Das Risiko wird nicht durch die obigen Optionen abgedeckt. <strong>⚠️ Kommentar erforderlich!</strong></td>\n      <td>• Spezifische Situation beschreiben</td>\n    </tr>\n  </tbody>\n</table>\n\n<hr>\n\n<p><strong>Letzte Aktualisierung:</strong> Oktober 2025<br>\n<strong>Bei Fragen:</strong> Wende dich an dein Motion Lead oder Retention Team</p>\n",
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "boxShadow"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "inputType": "html",
+  "isDefaultClickDisabled": true,
+  "isDisabled": false,
+  "isLoading": false,
+  "isRequired": false,
+  "isToolbarHidden": true,
+  "isVisible": true,
+  "key": "1sp1gamic5",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelText": "",
+  "labelWidth": 5,
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 27,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 21,
+  "mobileTopRow": 7,
+  "needsErrorInfo": false,
+  "parentColumnSpace": 6.9375,
+  "parentId": "nu9vex6z98",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 62,
+  "topRow": 5,
+  "type": "RICH_TEXT_EDITOR_WIDGET",
+  "version": 1,
+  "widgetId": "o93d3hma5r",
+  "widgetName": "RichTextEditor1"
+}

@@ -1,0 +1,25 @@
+WITH salesforce_accounts AS (
+    SELECT
+        account.txt_company_id__c AS company_id,
+        account.name,
+        account.account__owner_s__manager__c AS owner_manager, -- Neue Spalte hinzugefügt
+        users.full__name__c AS acc_owner
+    FROM snowplow.gold_zone_salesforce_s3.account AS account
+    LEFT JOIN snowplow.gold_zone_salesforce_s3.user AS users
+        ON account.owner_id = users.id
+)
+SELECT
+    job.job_id,
+    MAX(job.date_dt) AS date_dt,
+    job.job_title AS job_title,
+    job.product_type AS product_type,
+    sf_acc.name,
+    sf_acc.company_id,
+    sf_acc.acc_owner,
+    sf_acc.owner_manager -- Neue Spalte in der Hauptabfrage hinzugefügt
+FROM rds.rep_job_metrics AS job
+LEFT JOIN salesforce_accounts AS sf_acc
+    ON job.company_id = sf_acc.company_id
+WHERE job.date_dt >= CURRENT_DATE - INTERVAL '30 days'
+	AND product_type != 'Free' 
+GROUP BY job.job_id, sf_acc.company_id, sf_acc.acc_owner, job.job_title, job.product_type, sf_acc.name, sf_acc.owner_manager

@@ -1,0 +1,60 @@
+{
+  "animateLoading": true,
+  "backgroundColor": "",
+  "borderColor": "",
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "borderWidth": "1",
+  "bottomRow": 8,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "1rem",
+  "fontStyle": "BOLD",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "gmg1dx21n1",
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 46,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 15,
+  "mobileTopRow": 42,
+  "needsErrorInfo": false,
+  "originalBottomRow": 8,
+  "originalTopRow": 4,
+  "overflow": "NONE",
+  "parentColumnSpace": 9.1845703125,
+  "parentId": "p2h6tgldqn",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 53,
+  "shouldScrollContents": true,
+  "shouldTruncate": false,
+  "text": "{{\n(() => {\n  const raw = Renewal_List.filteredTableData || Renewal_List.tableData || [];\n  const start = new Date(ContractDateFrom.selectedDate);\n  const end = new Date(ContractDateTo.selectedDate);\n\n  // 1. Für jede opp_id: Vertrag mit spätestem contract_expired_date im Zeitraum\n  const latestContractByOpp = {};\n  raw.forEach(r => {\n    if (!r.opportunity_id || !r.contract_expired_date) return;\n    const date = new Date(r.contract_expired_date);\n    if (date < start || date > end) return;\n\n    if (\n      !latestContractByOpp[r.opportunity_id] ||\n      date > new Date(latestContractByOpp[r.opportunity_id].contract_expired_date)\n    ) {\n      latestContractByOpp[r.opportunity_id] = r;\n    }\n  });\n\n  // 2. Nutze den Status direkt aus der Tabelle (exakt wie Chart rechts)\n  const deduped = Object.values(latestContractByOpp).map(r => {\n    const rawStatus = (r.Status ?? '').toString().trim();\n    \n    let status;\n    if (!rawStatus) {\n      const daysUntil = r.days_until_expiration;\n      status = daysUntil <= 180 ? 'To Assess' : 'Upcoming';\n    } else {\n      status = rawStatus;\n    }\n    \n    return status;\n  }).filter(status => status !== 'Data Issue');  // Data Issue rausfiltern\n\n  // 3. Zähle nur offene Verträge (OHNE Closed Won und Renewal Lost)\n  const openCount = deduped.filter(status => \n    status !== 'Closed Won' && status !== 'Renewal Lost'\n  ).length;\n\n  return openCount;\n})()\n}}\n",
+  "textAlign": "LEFT",
+  "textColor": "#231F20",
+  "topRow": 4,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "4vjum5tcqy",
+  "widgetName": "Text8Copy8CopyCopy1CopyCopyCopyCopyCopy"
+}

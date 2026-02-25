@@ -1,0 +1,20 @@
+SELECT
+    MAX(date_dt) AS last_date,
+    job_id,
+    product_type,
+		job_slot_deactivated_dt,
+		job_slot_redeemed_dt,
+		job_updated_dt,
+		SUM(pageviews) AS total_pageviews,
+    SUM(active_application_start_count) + SUM(passive_application_start_count) AS app_start,
+    SUM(active_application_submit_count) + SUM(passive_application_submit_count) AS app_submit,
+    SUM(active_application_sent_count) + SUM(passive_application_sent_count) AS app_sent,
+    SUM(gold_application_count) AS gold_app,
+		SUM(hires_count) AS total_hires,
+    SUM(job_slot_days_live) AS total_job_slot_days_live,
+    kldb_classification_code,
+		is_easy_apply
+FROM rds.rep_job_metrics
+WHERE job_id = {{Job_Info.triggeredRow.job_id}}
+GROUP BY job_id, product_type, job_slot_deactivated_dt,job_slot_redeemed_dt, job_updated_dt,kldb_classification_code, is_easy_apply
+;

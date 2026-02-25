@@ -1,0 +1,12 @@
+{{
+  (() => {
+    const query = {
+      // Wandelt das UTC-Datum vom Widget zurück in die lokale Zeit des Browsers, 
+      // bevor es formatiert wird.
+      "Follow_up_Date_Account__c": moment(AccInfoFollowupDate.selectedDate).format("YYYY-MM-DD"),
+      "Follow_up_Details_Account__c": AccInfoFollowupDetails.text || ""
+    };
+
+    return query;
+  })()
+}}

@@ -1,0 +1,71 @@
+{
+  "animateLoading": true,
+  "backgroundColor": "{{\n(() => {\n  const status = snowplow_jobsDetails.data?.[0]?.status ?? \"\";\n  const s = status.toLowerCase();\n\n  // Farbpalette (hell + dezent)\n  const colors = {\n    green:  \"#22c55e\",   // published\n    yellow: \"#fff\",   // scheduled/submitted\n    blue:   \"#fff\",   // draft\n    gray:   \"#fff\",   // unpublished*\n    red:    \"#f03c3c\",   // fallback optional\n  };\n\n  if ([\"unpublished_by_admin\", \"unpublished_by_expiration\", \"unpublished_by_feed\", \"unpublished_by_recruiter\"].includes(s)) {\n    return colors.red;\n  }\n  if ([\"scheduled_for_publishing\", \"submitted_for_publishing\"].includes(s)) {\n    return colors.yellow;\n  }\n  if (s === \"published\") {\n    return colors.green;\n  }\n  if (s === \"draft\") {\n    return colors.blue;\n  }\n  // Default-Farbe\n  return \"#FFFFFF\";\n})()\n}}\n",
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 16,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    },
+    {
+      "key": "textColor"
+    },
+    {
+      "key": "backgroundColor"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "textColor"
+    },
+    {
+      "key": "backgroundColor"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "0.875rem",
+  "fontStyle": "BOLD",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "gmg1dx21n1",
+  "leftColumn": 13,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 46,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 16,
+  "mobileTopRow": 42,
+  "needsErrorInfo": false,
+  "originalBottomRow": 16,
+  "originalTopRow": 12,
+  "overflow": "NONE",
+  "parentColumnSpace": 9.1845703125,
+  "parentId": "ycn7r0n8wa",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 29,
+  "shouldScrollContents": true,
+  "shouldTruncate": false,
+  "text": "{{snowplow_jobsDetails.data[0]?.status}}",
+  "textAlign": "CENTER",
+  "textColor": "{{\n(() => {\n  const status = snowplow_jobsDetails.data?.[0]?.status ?? \"\";\n  const s = status.toLowerCase();\n\n  // Farbpalette (hell + dezent)\n  const colors = {\n    green:  \"#fff\",   // published\n    yellow: \"#FEF3C7\",   // scheduled/submitted\n    blue:   \"#485cc7\",   // draft\n    gray:   \"#999999\",   // unpublished*\n    red:    \"#fff\",   // fallback optional\n  };\n\n  if ([\"unpublished_by_admin\", \"unpublished_by_expiration\", \"unpublished_by_feed\", \"unpublished_by_recruiter\"].includes(s)) {\n    return colors.red;\n  }\n  if ([\"scheduled_for_publishing\", \"submitted_for_publishing\"].includes(s)) {\n    return colors.yellow;\n  }\n  if (s === \"published\") {\n    return colors.green;\n  }\n  if (s === \"draft\") {\n    return colors.blue;\n  }\n  // Default-Farbe\n  return \"#FFFFFF\";\n})()\n}}\n",
+  "topRow": 12,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "1zt6btwx38",
+  "widgetName": "CreditsValueCopy"
+}

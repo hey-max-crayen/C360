@@ -1,0 +1,57 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "bottomRow": 21,
+  "defaultValue": "24",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": "{{ModalAccFilter_RevenueBookings.isChecked === false}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "301i2bljfv",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelText": "Nur Accounts mit Bookings oder Revenue innerhalb folgenden Anzahl Monate:",
+  "labelTextSize": "0.875rem",
+  "labelWidth": 8,
+  "leftColumn": 0,
+  "marks": "[\n  {\n    \"value\": 6,\n    \"label\": \"6\"\n  },\n  {\n    \"value\": 12,\n    \"label\": \"12\"\n  },\n  {\n    \"value\": 18,\n    \"label\": \"18\"\n  },\n  {\n    \"value\": 24,\n    \"label\": \"24\"\n  },\n  {\n    \"value\": 30,\n    \"label\": \"30\"\n  },\n  {\n    \"value\": 36,\n    \"label\": \"36\"\n  }\n]",
+  "max": "24",
+  "min": 0,
+  "mobileBottomRow": 28,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 21,
+  "mobileTopRow": 20,
+  "needsErrorInfo": false,
+  "originalBottomRow": 29,
+  "originalTopRow": 21,
+  "parentColumnSpace": 18.14453125,
+  "parentId": "vl0dfjckth",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "shouldScroll": false,
+  "shouldTruncate": false,
+  "showMarksLabel": true,
+  "sliderSize": "m",
+  "step": 1,
+  "tooltipAlwaysOn": true,
+  "topRow": 13,
+  "type": "NUMBER_SLIDER_WIDGET",
+  "version": 1,
+  "widgetId": "byaiqxvsdl",
+  "widgetName": "ModalAccFilter_SliderMonths"
+}

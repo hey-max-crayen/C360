@@ -1,0 +1,30 @@
+{
+  "gitSyncId": "67fe02ce08c30476df4545b1_f241718c-0116-4a14-9022-c2e23b2bfa46",
+  "id": "Job Performance Copy_snowplow_jobsBenchmark",
+  "pluginId": "redshift-plugin",
+  "pluginType": "DB",
+  "unpublishedAction": {
+    "actionConfiguration": {
+      "body": "SELECT\n  -- Dynamische Gruppierungsfelder basierend auf SelectAverageType\n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \"c.job_complexity_v2_level\" : \n    SelectAverageType.selectedOptionValue === \"jobtype\" ? \"job_totals.kldb_jobtype\" : \n    \"job_totals.kldb_jobtype || ' - ' || job_totals.location_city\"}} AS grouping_field,\n  \n  COUNT(DISTINCT job_totals.job_slot_id) AS benchmark_jobs_count,\n  AVG(job_totals.total_impressions) AS avg_impressions,\n  AVG(job_totals.total_pageviews) AS avg_pageviews,\n  AVG(job_totals.total_app_start) AS avg_app_start,\n  AVG(job_totals.total_app_submit) AS avg_app_submit,\n  AVG(job_totals.total_app_sent) AS avg_app_sent,\n  AVG(job_totals.total_gold_app) AS avg_gold_app,\n  AVG(job_totals.total_hires) AS avg_total_hires,\n  AVG(job_totals.days_live) AS avg_days_live,\n  \n  -- Conversion Rates (basierend auf Job-Gesamtwerten)\n  AVG(CASE WHEN job_totals.total_impressions > 0 THEN (job_totals.total_pageviews * 100.0 / job_totals.total_impressions) END) AS avg_ctr_percent,\n  AVG(CASE WHEN job_totals.total_pageviews > 0 THEN (job_totals.total_app_start * 100.0 / job_totals.total_pageviews) END) AS avg_app_start_rate,\n  AVG(CASE WHEN job_totals.total_app_start > 0 THEN (job_totals.total_app_submit * 100.0 / job_totals.total_app_start) END) AS avg_completion_rate,\n  AVG(CASE WHEN job_totals.total_app_submit > 0 THEN (job_totals.total_app_sent * 100.0 / job_totals.total_app_submit) END) AS avg_qualification_rate,\n  AVG(CASE WHEN job_totals.total_app_sent > 0 THEN (job_totals.total_gold_app * 100.0 / job_totals.total_app_sent) END) AS avg_gold_rate,\n  AVG(CASE WHEN job_totals.total_gold_app > 0 THEN (job_totals.total_hires * 100.0 / job_totals.total_gold_app) END) AS avg_hire_rate\n\nFROM (\n  SELECT\n    m.job_slot_id,\n    m.job_id,\n    m.kldb_jobtype,\n    m.location_city,\n    SUM(m.impressions) AS total_impressions,\n    SUM(m.pageviews) AS total_pageviews,\n    SUM(m.active_application_start_count + m.passive_application_start_count) AS total_app_start,\n    SUM(m.active_application_submit_count + m.passive_application_submit_count) AS total_app_submit,\n    SUM(m.active_application_sent_count + m.passive_application_sent_count) AS total_app_sent,\n    SUM(m.gold_application_count) AS total_gold_app,\n    SUM(m.hires_count) AS total_hires,\n    MAX(m.job_slot_days_live) AS days_live\n  FROM rds.rep_job_metrics m\n  WHERE m.job_id != {{Job_List.selectedRow.job_id}}\n    AND job_slot_days_live <= {{Job_List.selectedRow.job_slot_days_live}}\n\t\tAND product_type = 'Hire'\n  GROUP BY m.job_slot_id, m.job_id, m.kldb_jobtype, m.location_city\n) job_totals\n\n-- Join mit CROAS nur wenn complexity ausgewählt ist\n{{SelectAverageType.selectedOptionValue === \"complexity\" ? \n  \"INNER JOIN bi_analytics_dbt.daily_croas_scores c ON job_totals.job_slot_id = c.job_slot_id\" : \n  \"LEFT JOIN bi_analytics_dbt.daily_croas_scores c ON job_totals.job_slot_id = c.job_slot_id\"}}\n\n-- Join mit dem aktuellen Job um das Grouping Field zu bestimmen\nINNER JOIN (\n  SELECT \n    {{SelectAverageType.selectedOptionValue === \"complexity\" ? \"c_current.job_complexity_v2_level\" : \n      SelectAverageType.selectedOptionValue === \"jobtype\" ? \"m_current.kldb_jobtype\" : \n      \"m_current.kldb_jobtype || ' - ' || m_current.location_city\"}} AS current_grouping_field\n  FROM rds.rep_job_metrics m_current\n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \n    \"INNER JOIN bi_analytics_dbt.daily_croas_scores c_current ON m_current.job_slot_id = c_current.job_slot_id\" : \"\"}}\n  WHERE m_current.job_slot_id = {{Job_List.selectedRow.job_slot_id}}\n  LIMIT 1\n) current_job ON (\n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \"c.job_complexity_v2_level\" : \n    SelectAverageType.selectedOptionValue === \"jobtype\" ? \"job_totals.kldb_jobtype\" : \n    \"job_totals.kldb_jobtype || ' - ' || job_totals.location_city\"}} = current_job.current_grouping_field\n)\n\nWHERE \n  job_totals.total_impressions > 0  -- Nur Jobs mit Aktivität\n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \n    \"AND c.is_jobslot_running_now = false AND COALESCE(c.job_slot_redeemed_at, c.job_slot_deactivated_at) BETWEEN CURRENT_DATE - INTERVAL '6 months' AND CURRENT_DATE\" : \n    \"\"}}\nGROUP BY \n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \"c.job_complexity_v2_level\" : \n    SelectAverageType.selectedOptionValue === \"jobtype\" ? \"job_totals.kldb_jobtype\" : \n    \"job_totals.kldb_jobtype, job_totals.location_city\"}}\nORDER BY \n  {{SelectAverageType.selectedOptionValue === \"complexity\" ? \"c.job_complexity_v2_level\" : \n    SelectAverageType.selectedOptionValue === \"jobtype\" ? \"job_totals.kldb_jobtype\" : \n    \"job_totals.kldb_jobtype, job_totals.location_city\"}};\n",
+      "encodeParamsToggle": true,
+      "paginationType": "NONE",
+      "timeoutInMillisecond": 1000000
+    },
+    "confirmBeforeExecute": false,
+    "datasource": {
+      "id": "Snowplow",
+      "isAutoGenerated": false,
+      "name": "Snowplow",
+      "pluginId": "redshift-plugin"
+    },
+    "dynamicBindingPathList": [
+      {
+        "key": "body"
+      }
+    ],
+    "name": "snowplow_jobsBenchmark",
+    "pageId": "Job Performance Copy",
+    "runBehaviour": "AUTOMATIC",
+    "userSetOnLoad": false
+  }
+}

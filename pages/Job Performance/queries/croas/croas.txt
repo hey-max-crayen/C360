@@ -1,0 +1,58 @@
+SELECT
+    job_title,
+    job_slot_redeemed_at,
+    job_slot_deactivated_at,
+    date_dt,
+    job_slot_days_live,
+    company_name,
+    account_owner_name,
+    account_owner_manager,
+    gtm_motion,
+    gtm_motion_account_owner,
+    job_slot_id,
+    job_id,
+    job_complexity_v2_level,
+    rt_applications_start,
+    rt_applications_submitted,
+    rt_applications_sent,
+    rt_gross_revenue,
+    scores_complexity_v2
+FROM
+    bi_analytics_dbt.daily_croas_scores
+WHERE 1
+    AND job_slot_redeemed_at >= '{{FilterJobStartFrom.selectedDate}}'::date
+    AND job_slot_redeemed_at < '{{FilterJobStartTo.selectedDate}}'::date
+    AND is_the_latest_avialable_day = true
+    
+    -- GTM Motion Filter (nur wenn Name UND Team NICHT ausgewählt)
+    AND (
+        {{!!InputName.selectedOptionValue}}  -- !! = Boolean-Konvertierung
+        OR {{!!InputTeam.selectedOptionValue}}
+        OR {{!InputMotion.selectedOptionValue}}
+        OR (
+            {{ InputMotion.selectedOptionValue === 'Subscription ACM' }}
+            AND gtm_motion IN ('Subscription Expansion','Subscription Retention')
+        )
+        OR (
+            {{ InputMotion.selectedOptionValue === 'Enterprise' }}
+            AND gtm_motion IN ('Enterprise Expansion','Enterprise Retention','Enterprise New Business')
+        )
+        OR (
+            gtm_motion = '{{ InputMotion.selectedOptionValue.replaceAll("'", "''") }}'
+        )
+    )
+    
+    -- Team Filter (nur wenn Name NICHT ausgewählt)
+    AND (
+        {{!!InputName.selectedOptionValue}}
+        OR {{!InputTeam.selectedOptionValue}}
+        OR account_owner_manager = '{{ InputTeam.selectedOptionValue.replaceAll("'", "''") }}'
+    )
+    
+    -- Name Filter (immer anwenden wenn ausgewählt)
+    AND (
+        {{!InputName.selectedOptionValue}}
+        OR account_owner_name = '{{ InputName.selectedOptionValue.replaceAll("'", "''") }}'
+    )
+ORDER BY
+    job_slot_redeemed_at DESC

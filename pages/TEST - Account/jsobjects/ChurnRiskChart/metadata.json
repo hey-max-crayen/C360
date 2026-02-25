@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "67fe02ce08c30476df4545b1_cd50f9b7-f09f-4389-91c0-9d6ad8df3bb2",
+  "id": "TEST - Account_ChurnRiskChart",
+  "unpublishedCollection": {
+    "name": "ChurnRiskChart",
+    "pageId": "TEST - Account",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowClear": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 7,
+  "boxShadow": "none",
+  "defaultOptionValue": "[\n  \"Deciding\", \"Unknown\", \"Not deciding, only invoice\", \"Deciding, no invoice\"\n]",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicTriggerPathList": [],
+  "expandAll": false,
+  "isDisabled": false,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "a520r0vfrz",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelText": "Purchase Decision Behavior auswählen (Mehrfachauswahl)",
+  "labelTextSize": "0.875rem",
+  "labelWidth": 5,
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 13,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 16,
+  "mobileTopRow": 6,
+  "mode": "SHOW_ALL",
+  "needsErrorInfo": false,
+  "options": "[\n  {\n    \"label\": \"Deciding and invoice\",\n    \"value\": \"Deciding\"\n  },\n  {\n    \"label\": \"Deciding, no invoice\",\n    \"value\": \"Deciding, no invoice\"\n  },\n  {\n    \"label\": \"Not deciding, no invoice\",\n    \"value\": \"Not deciding, no invoice\"\n  },\n  {\n    \"label\": \"Not deciding, only invoice\",\n    \"value\": \"Not deciding, only invoice\"\n  },\n  {\n    \"label\": \"Unknown\",\n    \"value\": \"Unknown\"\n  }\n]\n",
+  "parentColumnSpace": 18.75,
+  "parentId": "vl0dfjckth",
+  "parentRowSpace": 10,
+  "placeholderText": "Select option(s)",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 63,
+  "topRow": 0,
+  "type": "MULTI_SELECT_TREE_WIDGET",
+  "version": 1,
+  "widgetId": "ac3oygwxml",
+  "widgetName": "ModalAccFilter_Purchase"
+}

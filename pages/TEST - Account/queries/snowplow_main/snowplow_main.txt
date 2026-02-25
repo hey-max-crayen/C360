@@ -1,0 +1,180 @@
+WITH live_job AS (
+    SELECT
+        dim_job.company_id AS company_id_posted,
+        COUNT(*) AS nr_of_job_live
+    FROM cds.fact_publishing_periods AS puper
+    LEFT JOIN bds.dim_job USING (job_id)
+    WHERE CURRENT_DATE BETWEEN started_dt AND ended_dt
+    GROUP BY dim_job.company_id
+),
+remaining_credit AS (
+    SELECT
+        account.id AS sf_account_id,
+        SUM(purchase.remaining_total_eur) AS remaining_budget_c
+    FROM snowplow.gold_zone_salesforce_s3.account AS account
+    LEFT JOIN cds.fact_purchase AS purchase ON account.txt_company_id__c = purchase.company_id
+    WHERE purchase.remaining_total_eur > 1
+    GROUP BY 1
+),
+credit_used_last_24_months AS (
+    SELECT
+        company_id,
+        ROUND(SUM(total_goodwill_credit_used_eur) + SUM(total_paid_credit_used_eur), 0) AS rev_last_24_months
+    FROM rds.rep_accounting
+    WHERE date >= DATEADD(month, -{{ ModalAccFilter_SliderMonths.value || 24 }}, CURRENT_DATE)
+    GROUP BY company_id
+),
+last_revenue_date AS (
+    SELECT
+        COALESCE(revenue.company_id, jobs.company_id) AS company_id,
+        MAX(
+            GREATEST(
+                COALESCE(revenue.last_rev_generated_date, DATE '1900-01-01'),
+                COALESCE(jobs.last_job_live_date, DATE '1900-01-01')
+            )
+        ) AS last_rev_generated_date
+    FROM (
+        SELECT
+            company_id,
+            MAX(date) AS last_rev_generated_date
+        FROM snowplow.rds.rep_accounting
+        WHERE total_paid_credit_used_eur > 0
+        GROUP BY company_id
+    ) AS revenue
+    FULL OUTER JOIN (
+        SELECT
+            company_id,
+            MAX(date_dt) AS last_job_live_date
+        FROM rds.rep_job_metrics
+        WHERE product_type != 'Free'
+        GROUP BY company_id
+    ) AS jobs
+    ON revenue.company_id = jobs.company_id
+    GROUP BY COALESCE(revenue.company_id, jobs.company_id)
+),
+sf_acc AS (
+    SELECT
+        account.id,
+        account.name,
+        account.txt_company_id__c AS company_id,
+        account.purchase__decision__behavior__c,
+				account.Total__Live__Jobs__c,
+        users.g_t_m__motion__user__c AS acc_owner_gtm_motion,
+        users.manager_reports__c AS acc_manager,
+        users.full__name__c AS acc_owner,
+        TO_CHAR(budget__expiration__date__c::DATE, 'YYYY-MM-DD') AS budget_expiration_date,
+        CASE 
+            WHEN budget__expiration__date__c::DATE > CURRENT_DATE 
+            THEN DATEDIFF(DAY, CURRENT_DATE, budget__expiration__date__c::DATE) 
+            ELSE NULL 
+        END AS budget_remaining_days
+    FROM snowplow.gold_zone_salesforce_s3.account AS account
+    LEFT JOIN snowplow.gold_zone_salesforce_s3.user AS users ON account.owner_id = users.id
+    WHERE account.test__account__c IS FALSE
+        AND account.blacklist__c IS FALSE
+        AND account.bankrupt__c IS FALSE
+        AND users.g_t_m__motion__user__c IS NOT NULL
+),
+sf_opp AS (
+    SELECT
+        account_id,
+        COUNT(id) AS nr_of_bookings,
+        ROUND(MAX(amount), 0) AS max_booking_amount,
+        TO_CHAR(MAX(date_timestamp_contractreceived__c::DATE), 'YYYY-MM-DD') AS last_booking_date,
+        ROUND(SUM(CASE WHEN DATEADD(month, {{ ModalAccFilter_SliderMonths.value || 24 }}, date_timestamp_contractreceived__c::DATE) >= CURRENT_DATE THEN amount ELSE 0 END), 0) AS booking_last_24_months,
+        SUM(CASE WHEN DATEADD(month, {{ ModalAccFilter_SliderMonths.value || 24 }}, date_timestamp_contractreceived__c::DATE) >= CURRENT_DATE THEN 1 ELSE 0 END) AS nr_of_booking_last_24_months
+    FROM snowplow.gold_zone_salesforce_s3.opportunity
+    WHERE is_won
+        AND is_test__c = FALSE
+        AND opportunity.record__type__c NOT IN ('Agency Business', 'Agency Acquisition')
+    GROUP BY account_id
+),
+activity AS (
+    SELECT
+        account_id,
+        TO_CHAR(MAX(created_date::DATE), 'YYYY-MM-DD') AS last_call_attempt,
+        TO_CHAR(MAX(CASE WHEN call_duration_in_seconds >= 10 THEN created_date::DATE ELSE NULL END), 'YYYY-MM-DD') AS last_call_over_10s,
+        TO_CHAR(MAX(CASE WHEN call_duration_in_seconds >= 120 THEN created_date::DATE ELSE NULL END), 'YYYY-MM-DD') AS last_call_over_120s
+    FROM snowplow.gold_zone_salesforce_s3.task AS task
+    WHERE task.created_by_id = '0051v000005kqggAAA'
+        AND (call_type = 'Outbound' OR (call_type = 'Inbound' AND answered__unanswered__c = 'Answered'))
+        AND task.created_date >= DATEADD(month, -18, CURRENT_DATE)
+        AND account_id IS NOT NULL
+    GROUP BY account_id
+),
+meeting AS (
+    SELECT
+        events.account_id,
+        TO_CHAR(MAX(activity_date::DATE), 'YYYY-MM-DD') AS last_meeting_date
+    FROM snowplow.gold_zone_salesforce_s3.event AS events
+    WHERE events.is_deleted = FALSE
+        AND activity_date::DATE >= DATEADD(month, -18, CURRENT_DATE)
+        AND activity_date::DATE < CURRENT_DATE
+        AND event_cancelled__c = FALSE
+        AND events.account_id IS NOT NULL
+    GROUP BY events.account_id
+)
+SELECT
+    sf_acc.id AS sf_account_id,
+    sf_acc.company_id,
+    sf_acc.name,
+    sf_acc.acc_owner,
+    sf_acc.budget_remaining_days,
+		sf_acc.Total__Live__Jobs__c,
+    sf_acc.purchase__decision__behavior__c,
+    ROUND(remaining_credit.remaining_budget_c, 0) AS remaining_credit,
+    sf_opp.booking_last_24_months,
+    live_job.nr_of_job_live,
+    credit_used_last_24_months.rev_last_24_months,
+    CASE 
+        WHEN activity.last_call_attempt IS NULL THEN NULL
+        ELSE GREATEST(0, CURRENT_DATE - CAST(activity.last_call_attempt AS DATE))
+    END AS days_since_last_call_attempt,
+    CASE 
+        WHEN last_revenue_date.last_rev_generated_date IS NULL THEN NULL
+        ELSE GREATEST(0, CURRENT_DATE - CAST(last_revenue_date.last_rev_generated_date AS DATE))
+    END AS days_since_last_rev_generated,
+    CASE 
+        WHEN activity.last_call_over_120s IS NULL THEN CURRENT_DATE - CAST(meeting.last_meeting_date AS DATE)
+        WHEN meeting.last_meeting_date IS NULL THEN CURRENT_DATE - CAST(activity.last_call_over_120s AS DATE)
+        WHEN CAST(activity.last_call_over_120s AS DATE) > CAST(meeting.last_meeting_date AS DATE) THEN CURRENT_DATE - CAST(activity.last_call_over_120s AS DATE)
+        ELSE CURRENT_DATE - CAST(meeting.last_meeting_date AS DATE)
+    END AS days_since_last_meeting_or_call
+FROM sf_acc
+LEFT JOIN sf_opp ON sf_acc.id = sf_opp.account_id
+LEFT JOIN live_job ON live_job.company_id_posted = sf_acc.company_id
+LEFT JOIN remaining_credit ON sf_acc.id = remaining_credit.sf_account_id
+LEFT JOIN credit_used_last_24_months ON credit_used_last_24_months.company_id = sf_acc.company_id
+LEFT JOIN activity ON sf_acc.id = activity.account_id
+LEFT JOIN meeting ON sf_acc.id = meeting.account_id
+LEFT JOIN last_revenue_date ON sf_acc.company_id = last_revenue_date.company_id
+
+WHERE
+    -- Option 1: Wenn eine accountId in der URL übergeben wird, filtere NUR danach.
+    sf_acc.id = '{{ appsmith.URL.queryParams.accountId }}'
+
+    -- Option 2: Ansonsten (wenn keine accountId in der URL ist), wende die normalen Filter an.
+    OR (
+        '{{ !appsmith.URL.queryParams.accountId }}' = 'true' -- Prüft, ob der URL-Parameter leer/nicht vorhanden ist.
+        AND
+        (
+          {{ ModalAccFilter_RevenueBookings.isChecked ? `(credit_used_last_24_months.rev_last_24_months > 1 OR sf_opp.booking_last_24_months > 1)` : `1=1` }}
+        )
+        AND
+        (
+          CASE
+            WHEN '{{ appsmith.store.userName }}' = '' THEN sf_acc.acc_manager = '{{ appsmith.store.userTeam }}'
+            ELSE sf_acc.acc_owner = '{{ appsmith.store.userName }}'
+          END
+        )
+        AND
+        sf_acc.purchase__decision__behavior__c IN ({{ ModalAccFilter_Purchase.selectedOptionValues.map(value => `'${value}'`).join(",") }})
+    )
+
+ORDER BY
+    -- Sortiere dynamisch: Wenn nach einer ID gefiltert wird, ist die Sortierung egal.
+    -- Ansonsten sortiere wie bisher.
+    CASE
+        WHEN '{{ !!appsmith.URL.queryParams.accountId }}' = 'true' THEN NULL
+        ELSE sf_opp.booking_last_24_months
+    END DESC;

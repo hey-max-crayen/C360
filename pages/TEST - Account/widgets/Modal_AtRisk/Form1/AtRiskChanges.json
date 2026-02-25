@@ -1,0 +1,55 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "alignWidget": "RIGHT",
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 53,
+  "defaultCheckedState": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": "{{ AtRiskLiveTS.text === '' && AtRiskRenewalTS.text === '' }}",
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "z75mq3tpdd",
+  "label": "Ich bin mir sicher, dass ich diese Änderungen in Salesforce vornehmen möchte",
+  "labelPosition": "Left",
+  "leftColumn": 3,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 61,
+  "mobileLeftColumn": 17,
+  "mobileRightColumn": 29,
+  "mobileTopRow": 57,
+  "needsErrorInfo": false,
+  "originalBottomRow": 53,
+  "originalTopRow": 49,
+  "parentColumnSpace": 15.34375,
+  "parentId": "t0vfrcmi4m",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 62,
+  "topRow": 49,
+  "type": "CHECKBOX_WIDGET",
+  "version": 1,
+  "widgetId": "4q2fthqty8",
+  "widgetName": "AtRiskChanges"
+}

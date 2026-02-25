@@ -1,0 +1,22 @@
+SET TIME ZONE 'Europe/Berlin';
+
+INSERT INTO public."RenewalManagementRisk" (
+    account_id,
+    opp_id,
+    category,
+    risk_status,
+    submit_details,
+    submit_timestamp,
+    submit_user,
+		risk_label
+)
+VALUES (
+    {{ Renewal_List.selectedRow.account_id }},
+    {{ Renewal_List.selectedRow.opportunity_id }},
+    'risk_status',
+    {{ ModalInputRiskStatus.selectedOptionValue }},
+    {{ ModalInputRiskDetails.text }},
+    now(),
+    {{ appsmith.user.username }},
+		'{{ RiskCategory.selectedOptionValue}}'
+);

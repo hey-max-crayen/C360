@@ -1,0 +1,111 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 19,
+  "boxShadow": "none",
+  "chartData": {
+    "jltdpc39w5": {
+      "data": "{{\n  Object.entries(\n    (Renewal_List.filteredTableData || Renewal_List.tableData || [])\n      .reduce((acc, r) => {\n        const k = (r.Status ?? '').toString().trim() || 'Unbekannt';\n        acc[k] = (acc[k] || 0) + 1;\n        return acc;\n      }, {})\n  )\n  .map(([x, y]) => ({\n    x,\n    y,\n    itemStyle: {\n      color: ({\n        'At Risk': '#ea4335',\n        'Low Risk': '#fbbc04',\n        'Closed Won': '#22b31e',\n        'Renewal Lost': '#A9A9A9'\n      }[x] || 'transparent')\n    }\n  }))\n  .sort((a,b) => b.y - a.y)\n}}\n",
+      "seriesName": ""
+    }
+  },
+  "chartName": "",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( \n(() => {\n  const raw = Renewal_List.filteredTableData || Renewal_List.tableData || [];\n  const data = raw\n    .filter(r => r.contract_expired_date)\n    .reduce((acc, r) => {\n      const date = r.contract_expired_date;\n      // Status bestimmen; leere/fehlende Werte werden zu \"No Status\"\n      const rawStatus = (r.Status ?? '').toString().trim();\n      const status = rawStatus ? rawStatus : 'No Status';\n      if (!acc[date]) acc[date] = {};\n      acc[date][status] = (acc[date][status] || 0) + 1; // Hier war der Fehler\n      return acc;\n    }, {});\n\n  const dates = Object.keys(data).sort();\n  const statuses = [...new Set(Object.values(data).flatMap(Object.keys))];\n\n   // Color Coding inkl. Hellgrau für \"No Status\"\n  const colors = {\n    'At Risk': '#ea4335',      // Rot\n    'Low Risk': '#AEEA00',     // Lime (hellgrünlich)\n    'Closed Won': '#22b31e',   // Dunkelgrün\n    'Renewal Lost': '#424242', // Dunkelgrau\n    'No Status': '#CCCCCC'     // Hellgrau, gut sichtbar auf weiß\n  };\n\n  return {\n    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },\n    legend: { data: statuses },\n    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },\n    xAxis: {\n      type: 'category',\n      data: dates,\n      axisLabel: {\n        formatter: value => new Date(value).toLocaleDateString('de-DE'),\n        rotate: 45\n      }\n    },\n    yAxis: { type: 'value' },\n    series: statuses.map(status => ({\n      name: status,\n      type: 'bar',\n      stack: 'total',\n      emphasis: { focus: 'series' },\n      itemStyle: { color: colors[status] || '#CCCCCC' }, // Fallback: Hellgrau\n      data: dates.map(date => (data[date]?.[status] ?? 0))\n    }))\n  };\n})()\n))(RiskTimelineChart.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.jltdpc39w5.data"
+    },
+    {
+      "key": "customEChartConfig"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "4tnoev0v85",
+  "labelOrientation": "auto",
+  "leftColumn": 14,
+  "minWidth": 450,
+  "mobileBottomRow": 30,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 19,
+  "mobileTopRow": 0,
+  "needsErrorInfo": true,
+  "parentColumnSpace": 19.607421875,
+  "parentId": "rq9u5fm8i5",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 47,
+  "setAdaptiveYMin": false,
+  "showDataPointLabel": false,
+  "topRow": 0,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "2ciiye0o8d",
+  "widgetName": "RiskTimelineChart",
+  "xAxisName": "",
+  "yAxisName": ""
+}

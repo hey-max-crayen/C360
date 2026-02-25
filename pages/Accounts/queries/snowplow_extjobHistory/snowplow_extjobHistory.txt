@@ -1,0 +1,9 @@
+SELECT
+    d,
+    stepstone__jobs__hierarchy__c,
+    indeed__jobs__hierarchy__c,
+    company__website__jobs__hierarchy__c
+FROM bi_analytics_dbt.stage_jobs_daily
+WHERE account_id = '{{Account_List.selectedRow.sf_account_id}}'
+    AND d >= CURRENT_DATE - INTERVAL '120 days'
+ORDER BY d

@@ -1,0 +1,111 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 19,
+  "boxShadow": "none",
+  "chartData": {
+    "jltdpc39w5": {
+      "data": "{{\n  Object.entries(\n    (Renewal_List.filteredTableData || Renewal_List.tableData || [])\n      .reduce((acc, r) => {\n        const k = (r.Status ?? '').toString().trim() || 'Unbekannt';\n        acc[k] = (acc[k] || 0) + 1;\n        return acc;\n      }, {})\n  )\n  .map(([x, y]) => ({\n    x,\n    y,\n    itemStyle: {\n      color: ({\n        'At Risk': '#ea4335',\n        'Low Risk': '#fbbc04',\n        'Closed Won': '#22b31e',\n        'Renewal Lost': '#A9A9A9'\n      }[x] || 'transparent')\n    }\n  }))\n  .sort((a,b) => b.y - a.y)\n}}\n",
+      "seriesName": ""
+    }
+  },
+  "chartName": "",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( \n(() => {\n  const raw = Renewal_List.filteredTableData || Renewal_List.tableData || [];\n  const counts = raw.reduce((acc, r) => {\n    const keyRaw = (r.Status ?? '').toString().trim();\n    const key = keyRaw ? keyRaw : 'No Status';\n    acc[key] = (acc[key] || 0) + 1;\n    return acc;\n  }, {});\n\n  const entriesSorted = Object.entries(counts).sort(([, a], [, b]) => b - a);\n  const labels = entriesSorted.map(([name]) => name);\n\n  // Gleiche Farbdefinitionen wie zuvor (inkl. Hellgrau für \"No Status\")\n  const colors = {\n    'At Risk': '#e53935',      // Rot\n    'Low Risk': '#AEEA00',     // Lime (hell)\n    'Closed Won': '#22b31e',   // Dunkelgrün\n    'Renewal Lost': '#424242', // Dunkelgrau\n    'No Status': '#CCCCCC'     // Hellgrau, gut sichtbar auf weiß\n  };\n\n  return {\n    tooltip: {\n      trigger: 'item',\n      formatter: '{b}: {c}'\n    },\n    grid: {\n      left: '30%',\n      right: '10%',\n      top: '5%',\n      bottom: '5%',\n      containLabel: false\n    },\n    xAxis: { type: 'value', show: false },\n    yAxis: {\n      type: 'category',\n      show: true,\n      axisLine: { show: false },\n      axisTick: { show: false },\n      axisLabel: { show: true, color: '#333', fontSize: 12 },\n      data: labels\n    },\n    series: [{\n      type: 'bar',\n      label: {\n        show: true,\n        position: 'inside',\n        formatter: '{c}',\n        color: '#fff',\n        fontWeight: 'bold'\n      },\n      data: entriesSorted.map(([name, value]) => ({\n        value,\n        name,\n        itemStyle: {\n          color: colors[name] || '#CCCCCC' // Fallback konsistent\n        }\n      }))\n    }]\n  };\n})()\n))(RiskChart.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.jltdpc39w5.data"
+    },
+    {
+      "key": "customEChartConfig"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "4tnoev0v85",
+  "labelOrientation": "auto",
+  "leftColumn": 47,
+  "minWidth": 450,
+  "mobileBottomRow": 30,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 19,
+  "mobileTopRow": 0,
+  "needsErrorInfo": true,
+  "parentColumnSpace": 19.607421875,
+  "parentId": "rq9u5fm8i5",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "setAdaptiveYMin": false,
+  "showDataPointLabel": false,
+  "topRow": 0,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "b2nyj3nzo8",
+  "widgetName": "RiskChart",
+  "xAxisName": "",
+  "yAxisName": ""
+}

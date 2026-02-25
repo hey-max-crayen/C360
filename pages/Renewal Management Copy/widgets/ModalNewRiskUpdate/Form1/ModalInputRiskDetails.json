@@ -1,0 +1,69 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "autoFocus": false,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 29,
+  "boxShadow": "none",
+  "defaultText": "",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "validation"
+    },
+    {
+      "key": "placeholderText"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "iconAlign": "left",
+  "inputType": "MULTI_LINE_TEXT",
+  "isDisabled": false,
+  "isLoading": false,
+  "isRequired": true,
+  "isSpellCheck": true,
+  "isVisible": true,
+  "key": "tsahwa9q6w",
+  "label": "Renewal Status - Details (min. 100 Zeichen)",
+  "labelAlignment": "left",
+  "labelPosition": "Top",
+  "labelStyle": "",
+  "labelTextSize": "0.875rem",
+  "labelWidth": 5,
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 20,
+  "mobileLeftColumn": 1,
+  "mobileRightColumn": 21,
+  "mobileTopRow": 13,
+  "needsErrorInfo": false,
+  "originalBottomRow": 34,
+  "originalTopRow": 12,
+  "parentColumnSpace": 16.6875,
+  "parentId": "wjyil4ox81",
+  "parentRowSpace": 10,
+  "placeholderText": "{{\n  (() => {\n    const map = _.keyBy(GetCurrentRiskStatus.data, 'opp_id');\n    const oppId = Renewal_List.selectedRow?.opportunity_id; // Achte auf den Widget-Namen; ggf. \"RenewalList\"\n    const val = oppId ? map[oppId]?.risk_status : null;\n\n    const defaultWithEntry = [\n      \"Status-Update:\",\n      \"1. Fortschritt seit der letzten Aktualisierung: (Welche Maßnahmen wurden abgeschlossen?)\",\n      \"2. Aktueller Status und Confidence: (Hat sich das Risikoprofil verändert? Wie ist die aktuelle Stimmung?)\",\n      \"3. Nächste Schritte: (Welche Aktivitäten erfolgen bis zur nächsten Aktualisierung?)\",\n    ].join(\"\\n\");\n\n    const defaultEmpty = [\n      \"Initiale Risikobewertung\",\n      \"1. Aktuelle Situation: (Beschreiben Sie kurz den Zustand des Accounts und der Kundenbeziehung.)\",\n      \"2. Identifizierte Risiken: (Listen Sie potenzielle Risiken auf, z. B. geringe Nutzung, Weggang wichtiger Ansprechpartner, Budgetbedenken.)\",\n      \"3. Strategischer Maßnahmenplan: (Welche übergeordneten ersten Schritte sind nötig, um die Verlängerung abzusichern?)\",\n    ].join(\"\\n\");\n\n    return val && String(val).trim().length > 0 ? defaultWithEntry : defaultEmpty;\n  })()\n}}\n",
+  "regex": "^[\\s\\S]+$",
+  "renderMode": "CANVAS",
+  "resetOnSubmit": true,
+  "responsiveBehavior": "fill",
+  "rightColumn": 62,
+  "shouldAllowAutofill": false,
+  "showStepArrows": false,
+  "tooltip": "",
+  "topRow": 7,
+  "type": "INPUT_WIDGET_V2",
+  "validation": "{{ ModalInputRiskDetails.text && ModalInputRiskDetails.text.trim().length > 100 }}\n",
+  "version": 2,
+  "widgetId": "6i0h2euogz",
+  "widgetName": "ModalInputRiskDetails"
+}

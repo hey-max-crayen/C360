@@ -1,0 +1,78 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "borderRadius": "0.375rem",
+  "bottomRow": 4,
+  "bottomRowBeforeCollapse": 4,
+  "boxShadow": "none",
+  "defaultOptionValue": "{{ ((options, serverSideFiltering) => ( Accountname.text))(Select_AccountSearch.options, Select_AccountSearch.serverSideFiltering) }}",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "sourceData"
+    },
+    {
+      "key": "defaultOptionValue"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "sourceData"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onFilterUpdate"
+    },
+    {
+      "key": "onOptionChange"
+    }
+  ],
+  "isDisabled": false,
+  "isFilterable": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": false,
+  "key": "z0z0nhm0iy",
+  "labelAlignment": "right",
+  "labelPosition": "Left",
+  "labelStyle": "",
+  "labelText": "Account suchen",
+  "labelTextColor": "#71717a",
+  "labelTextSize": "0.875rem",
+  "labelTooltip": "Mindestens drei Zeichen des Accountnamens eingeben und einen Moment warten, bis die Vorschläge erscheinen.",
+  "labelWidth": "6",
+  "leftColumn": 20,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 5,
+  "mobileLeftColumn": 30,
+  "mobileRightColumn": 50,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "onFilterUpdate": "{{Select_AccountSearchonFilterUp.Select_AccountSearchonFilterUpdate();}}",
+  "onOptionChange": "{{Select_AccountSearchonOptionCh.Select_AccountSearchonOptionChange();}}",
+  "optionLabel": "display_name",
+  "optionValue": "id",
+  "originalBottomRow": 4,
+  "originalTopRow": 0,
+  "parentColumnSpace": 17.625,
+  "parentId": "0",
+  "parentRowSpace": 10,
+  "placeholderText": "Name oder Salesforce ID",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 41,
+  "serverSideFiltering": true,
+  "sourceData": "{{ account_search.data }}",
+  "topRow": 0,
+  "topRowBeforeCollapse": 0,
+  "type": "SELECT_WIDGET",
+  "version": 1,
+  "widgetId": "vgvmdh2nir",
+  "widgetName": "Select_AccountSearch"
+}

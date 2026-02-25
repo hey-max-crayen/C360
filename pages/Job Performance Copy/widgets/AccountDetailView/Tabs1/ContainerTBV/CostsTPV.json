@@ -1,0 +1,57 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 4,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "1rem",
+  "fontStyle": "BOLD",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "gmg1dx21n1",
+  "leftColumn": 26,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 46,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 16,
+  "mobileTopRow": 42,
+  "needsErrorInfo": false,
+  "originalBottomRow": 4,
+  "originalTopRow": 0,
+  "overflow": "NONE",
+  "parentColumnSpace": 9.1845703125,
+  "parentId": "pehao6iny2",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 39,
+  "shouldScrollContents": true,
+  "shouldTruncate": false,
+  "text": "{{ \n  (() => {\n    const impressions = parseFloat(snowplow_jobsDetails.data[0]?.total_pageviews) || 0;\n    const revenue = Job_List.selectedRow.rt_gross_revenue || 0;\n    const result = revenue > 0 ? revenue / impressions : 0;\n    return result.toLocaleString('de-DE', { \n      style: 'currency', \n      currency: 'EUR', minimumFractionDigits: 2,\n maximumFractionDigits: 2\n    });\n  })()\n}}\n",
+  "textAlign": "CENTER",
+  "textColor": "#231f20",
+  "topRow": 0,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "ugbiw56rna",
+  "widgetName": "CostsTPV"
+}

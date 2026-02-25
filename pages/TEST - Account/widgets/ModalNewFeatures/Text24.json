@@ -1,0 +1,52 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 16,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "0.875rem",
+  "fontStyle": "",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "nzh98mnyg1",
+  "leftColumn": 1,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 10,
+  "mobileLeftColumn": 1,
+  "mobileRightColumn": 17,
+  "mobileTopRow": 6,
+  "needsErrorInfo": false,
+  "originalBottomRow": 16,
+  "originalTopRow": 6,
+  "overflow": "NONE",
+  "parentColumnSpace": 18.8125,
+  "parentId": "mqxxxfzzjh",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 63,
+  "shouldTruncate": false,
+  "text": "12.06.2025:\n- Account Filter: Accounts können nun nach Purchase Behavior gefiltert werden. \"Not Deciding and Not Invoicing\" werden standardmäßig nicht angezeigt. Außerdem kann nach \"Months since last Bookings or Revenue\" gefiltert werden. Es können auch Accounts angezeigt werden, die noch nie Bookings oder Revenue hatten.\n- Neue Anordnung der Übersicht in Tabs\n- Neuer Tab \"Info\": dort kann Account Description, Purchase Behaviour und Follow Up Felder in aus Salesforce angezeigt und geändert werden.\n",
+  "textAlign": "LEFT",
+  "textColor": "#231F20",
+  "topRow": 6,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "853e0ggvh2",
+  "widgetName": "Text24"
+}

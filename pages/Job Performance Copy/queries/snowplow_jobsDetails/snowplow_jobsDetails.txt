@@ -1,0 +1,32 @@
+SELECT
+  MAX(rjm.date_dt) AS last_date,
+  rjm.job_id,
+  rjm.job_slot_id,
+  rjm.product_type,
+  rjm.location_city,
+  MAX(rjm.job_slot_deactivated_dt) AS job_slot_deactivated_dt,
+  MAX(rjm.job_slot_redeemed_dt)    AS job_slot_redeemed_dt,
+  MAX(rjm.job_updated_dt)          AS job_updated_dt,
+  MAX(rjm.kldb_classification_code) AS kldb_classification_code,
+  MAX(rjm.kldb_jobtype_de)         AS kldb_jobtype_de,
+  MAX(rjm.kldb_jobtype)            AS kldb_jobtype,
+  SUM(rjm.impressions)             AS impressions,
+  SUM(rjm.pageviews)               AS total_pageviews,
+  SUM(rjm.active_application_start_count) + SUM(rjm.passive_application_start_count) AS app_start,
+  SUM(rjm.active_application_submit_count) + SUM(rjm.passive_application_submit_count) AS app_submit,
+  SUM(rjm.active_application_sent_count) + SUM(rjm.passive_application_sent_count) AS app_sent,
+  SUM(rjm.active_application_start_count)   AS app_start_active,
+  SUM(rjm.active_application_submit_count)  AS app_submit_active,
+  SUM(rjm.active_application_sent_count)    AS app_sent_active,
+  SUM(rjm.gold_application_count)  AS gold_app,
+  SUM(rjm.hires_count)             AS total_hires,
+  MAX(rjm.job_slot_days_live)      AS total_job_slot_days_live, -- oder SUM(...), je nach Definition
+  SUM(rjm.heyassessment_completed_active_application_sent_count)
+    + SUM(rjm.heyassessment_completed_passive_application_sent_count) AS heyassessment_completed,
+  dj.status
+FROM rds.rep_job_metrics rjm
+LEFT JOIN bds.dim_job dj
+  ON dj.job_id = rjm.job_id
+WHERE rjm.job_slot_id = {{Job_List.selectedRow.job_slot_id}}
+GROUP BY
+  rjm.job_id, rjm.job_slot_id, rjm.product_type, rjm.location_city, dj.status;

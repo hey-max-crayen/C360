@@ -1,0 +1,23 @@
+SELECT
+    rjm.date_dt AS date_dt,
+    rjm.job_slot_days_live AS job_slot_days_live,
+    rjm.job_slot_id AS job_slot_id,
+    -- Adjusted the original croas_selected Querry to pull from the same source as the funnel conversions to reduce differences 
+    -- Running totals for applications (cumulative sum ordered by date)
+    SUM(rjm.active_application_start_count + rjm.passive_application_start_count) 
+        OVER (PARTITION BY rjm.job_slot_id ORDER BY rjm.date_dt 
+              ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS rt_applications_start,
+    
+    SUM(rjm.active_application_submit_count + rjm.passive_application_submit_count) 
+        OVER (PARTITION BY rjm.job_slot_id ORDER BY rjm.date_dt 
+              ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS rt_applications_submitted,
+    
+    SUM(rjm.active_application_sent_count + rjm.passive_application_sent_count) 
+        OVER (PARTITION BY rjm.job_slot_id ORDER BY rjm.date_dt 
+              ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS rt_applications_sent,
+    
+    NULL AS scores_complexity_v2  -- This field doesn't exist in rep_job_metrics
+    
+FROM rds.rep_job_metrics rjm
+WHERE rjm.job_slot_id = {{Job_List.selectedRow.job_slot_id}}
+ORDER BY rjm.job_slot_id, rjm.date_dt

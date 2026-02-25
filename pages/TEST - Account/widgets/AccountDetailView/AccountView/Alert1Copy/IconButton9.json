@@ -1,0 +1,46 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 4,
+  "boxShadow": "none",
+  "buttonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "buttonVariant": "TERTIARY",
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "buttonColor"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconName": "search-template",
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "3h3oj7f5ro",
+  "leftColumn": 52,
+  "minWidth": 50,
+  "mobileBottomRow": 4,
+  "mobileLeftColumn": 47,
+  "mobileRightColumn": 51,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "onClick": "{{navigateTo('https://heyjobs.lightning.force.com/lightning/r/Account/' + Account_List.selectedRow.sf_account_id + '/related/Jobs__r/view', {}, 'NEW_WINDOW');}}",
+  "parentColumnSpace": 2.4141693115234375,
+  "parentId": "xv6z798guc",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "hug",
+  "rightColumn": 64,
+  "tooltip": "Externe Jobs in einem neuen Fenster in Salesforce öffnen.",
+  "topRow": 0,
+  "type": "ICON_BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "pzlym3gymt",
+  "widgetName": "IconButton9"
+}

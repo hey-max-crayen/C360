@@ -1,0 +1,50 @@
+{
+  "animateLoading": false,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 8,
+  "bottomRowBeforeCollapse": 8,
+  "boxShadow": "none",
+  "buttonColor": "#ef4444",
+  "buttonVariant": "TERTIARY",
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "isVisible"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "iconName": "warning-sign",
+  "isDisabled": false,
+  "isLoading": false,
+  "isVisible": "{{  Account_List.selectedRow.follow_up_days < 0 \n    ? true \n    : false\n}}\n",
+  "key": "6vrcgqgd3n",
+  "leftColumn": 42,
+  "minWidth": 50,
+  "mobileBottomRow": 4,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 4,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "originalBottomRow": 8,
+  "originalTopRow": 4,
+  "parentColumnSpace": 8.05859375,
+  "parentId": "c93cmxr09m",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "hug",
+  "rightColumn": 46,
+  "tooltip": "Das Follow-Up Datum liegt in der Vergangenheit!",
+  "topRow": 4,
+  "topRowBeforeCollapse": 4,
+  "type": "ICON_BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "uz241eksfj",
+  "widgetName": "IconButton12"
+}

@@ -1,0 +1,112 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 175,
+  "boxShadow": "none",
+  "chartData": {
+    "jxkwdydhgl": {
+      "data": "{{Usage_chart_IC.getChartOptions()}}",
+      "seriesName": ""
+    }
+  },
+  "chartName": "C360 Activity",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( \n  (() => {\n    const fixedRowCount = 80; \n    const data = C360_Usage.data; \n\n    if (!data || data.length === 0) {\n      return { series: [] }; \n    }\n    \n    const last30Weekdays = [];\n    let currentDate = new Date();\n\n    while (last30Weekdays.length < 60) {\n      const dayOfWeek = currentDate.getDay();\n      if (dayOfWeek !== 0 && dayOfWeek !== 6) {\n        last30Weekdays.push(currentDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }));\n      } currentDate.setDate(currentDate.getDate() - 1);\n    }\n    last30Weekdays.reverse();\n\n    const actualUsers = [...new Set(data.map(item => item.user_owner_name))].sort().slice(0, fixedRowCount);\n\n    const userToIndexMap = new Map();\n    actualUsers.forEach((user, index) => {\n      userToIndexMap.set(user, index);\n    });\n    \n    const yAxisLabels = [...actualUsers];\n    while (yAxisLabels.length < fixedRowCount) {\n      yAxisLabels.push('');\n    }\n\n    const dailyCounts = {};\n    data.forEach(row => {\n      const dateStr = row.timestamp.split(\" \")[0];\n      const userName = row.user_owner_name;\n      if (!dailyCounts[dateStr]) dailyCounts[dateStr] = {};\n      if (!dailyCounts[dateStr][userName]) dailyCounts[dateStr][userName] = 0;\n      dailyCounts[dateStr][userName]++;\n    });\n\n    const heatmapData = [];\n    let maxCount = 0; \n\n    Object.keys(dailyCounts).forEach(dateStr => {\n      Object.keys(dailyCounts[dateStr]).forEach(userName => {\n        const dayIndex = last30Weekdays.indexOf(dateStr);\n        const userIndex = userToIndexMap.get(userName);\n        const count = dailyCounts[dateStr][userName];\n        \n        if (dayIndex > -1 && userIndex !== undefined) {\n          heatmapData.push([dayIndex, userIndex, count]);\n        }\n        if (count > maxCount) maxCount = count;\n      });\n    });\n\n    return {\n      tooltip: {\n        position: 'top',\n        formatter: (params) => {\n          if (!params || !params.value || !yAxisLabels[params.value[1]]) return '';\n          const userName = yAxisLabels[params.value[1]];\n          const date = last30Weekdays[params.value[0]];\n          const count = params.value[2];\n          return `${userName}<br/>${date}: <strong>${count}</strong>`;\n        }\n      },\n      grid: {\n        top: '1%',      // Verringert den Abstand oben\n        bottom: '5%',  // Verringert den Abstand unten\n        left: '2%',\n        right: '2%',\n        containLabel: true \n      },\n      xAxis: {\n        type: 'category',\n        position: 'top',\n        data: last30Weekdays,\n        splitArea: { show: true },\n        axisLabel: { interval: 0, rotate: 90 }\n      },\n      yAxis: {\n        type: 'category',\n        data: yAxisLabels,\n        inverse: true,\n        splitArea: { show: true }\n      },\n      visualMap: {\n        min: 0,\n        max: maxCount,\n        calculable: true,\n        orient: 'horizontal',\n        left: 'center',\n        bottom: '1%',\n        inRange: {\n          color: ['#f5c7dd', '#ec66a7', '#c84182'] \n        }\n      },\n      series: [{\n        name: 'User-Aktivität',\n        type: 'heatmap',\n        data: heatmapData,\n        label: {\n          show: true,\n          formatter: (params) => {\n            if (!params || !params.value) return '';\n            return params.value[2] > 0 ? params.value[2] : '';\n          }\n        }\n      }]\n    };\n  })()\n))(Activity_Chart_overview.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.jxkwdydhgl.data"
+    },
+    {
+      "key": "customEChartConfig"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "cmwej65h6b",
+  "labelOrientation": "auto",
+  "leftColumn": 0,
+  "minWidth": 450,
+  "mobileBottomRow": 52,
+  "mobileLeftColumn": 3,
+  "mobileRightColumn": 27,
+  "mobileTopRow": 20,
+  "needsErrorInfo": true,
+  "originalBottomRow": 176,
+  "originalTopRow": 7,
+  "parentColumnSpace": 20.5625,
+  "parentId": "mgcxpdepre",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "showDataPointLabel": false,
+  "topRow": 6,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "y28w47vq16",
+  "widgetName": "Activity_Chart_overview",
+  "xAxisName": "Product Line",
+  "yAxisName": ""
+}

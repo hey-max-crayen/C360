@@ -1,0 +1,61 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 57,
+  "boxShadow": "none",
+  "buttonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "buttonStyle": "PRIMARY_BUTTON",
+  "buttonVariant": "PRIMARY",
+  "disabledWhenInvalid": false,
+  "dynamicBindingPathList": [
+    {
+      "key": "buttonColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicPropertyPathList": [
+    {
+      "key": "isDisabled"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClick"
+    }
+  ],
+  "iconAlign": "left",
+  "iconName": "floppy-disk",
+  "isDefaultClickDisabled": true,
+  "isDisabled": "{{ !AtRiskChanges.isChecked }}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "xs9mrdsd5d",
+  "leftColumn": 47,
+  "minWidth": 120,
+  "mobileBottomRow": 22,
+  "mobileLeftColumn": 47,
+  "mobileRightColumn": 63,
+  "mobileTopRow": 18,
+  "needsErrorInfo": false,
+  "onClick": "{{SFDC_update_at_risk.run().then(() => {\n  showAlert('✅ Account in Salesforce erfolgreich aktualisiert', '');\n}).catch(() => {\n  showAlert('❌ Aktualisierung des Accounts in Salesforce fehlgeschlagen', '');\n});\nGetAccountsSelected.run().then(() => {\n  closeModal(Modal_AtRisk.name);\n});}}",
+  "originalBottomRow": 57,
+  "originalTopRow": 53,
+  "parentId": "t0vfrcmi4m",
+  "placement": "CENTER",
+  "recaptchaType": "V3",
+  "renderMode": "CANVAS",
+  "resetFormOnClick": false,
+  "responsiveBehavior": "hug",
+  "rightColumn": 62,
+  "text": "In Salesforce speichern",
+  "topRow": 53,
+  "type": "BUTTON_WIDGET",
+  "version": 1,
+  "widgetId": "rh2ccp0x95",
+  "widgetName": "AtRiskSubmit"
+}

@@ -1,0 +1,60 @@
+WITH calendar AS (
+    SELECT DISTINCT TO_CHAR(DATE_TRUNC('week', date), 'YYYY-MM-DD') AS week_date
+    FROM bds.dim_calendar
+    WHERE date >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '12 months'
+        AND date <= CURRENT_DATE
+),
+meeting AS (
+    SELECT
+        events.account_id,
+        TO_CHAR(DATE_TRUNC('week', activity_date::DATE), 'YYYY-MM-DD') AS week_date,
+        COUNT(*) AS meeting_count
+    FROM snowplow.gold_zone_salesforce_s3.event AS events
+    WHERE events.is_deleted = FALSE
+        AND activity_date::DATE >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '12 months'
+        AND activity_date::DATE <= CURRENT_DATE
+        AND event_cancelled__c = FALSE
+        AND events.account_id = '{{ Account_List.selectedRow.sf_account_id }}' -- Filter auf aktuellen Account
+    GROUP BY events.account_id, TO_CHAR(DATE_TRUNC('week', activity_date::DATE), 'YYYY-MM-DD')
+),
+activity AS (
+    SELECT
+        account_id,
+        TO_CHAR(DATE_TRUNC('week', created_date::DATE), 'YYYY-MM-DD') AS week_date,
+        COUNT(*) AS total_calls,
+        COUNT(CASE WHEN call_duration_in_seconds >= 10 THEN 1 ELSE NULL END) AS calls_over_10s,
+        COUNT(CASE WHEN call_duration_in_seconds >= 120 THEN 1 ELSE NULL END) AS calls_over_120s
+    FROM snowplow.gold_zone_salesforce_s3.task AS task
+    WHERE task.created_by_id = '0051v000005kqggAAA'
+        AND (call_type = 'Outbound' OR (call_type = 'Inbound' AND answered__unanswered__c = 'Answered'))
+        AND task.created_date >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '12 months'
+        AND task.created_date <= CURRENT_DATE
+        AND account_id = '{{ Account_List.selectedRow.sf_account_id }}' -- Filter auf aktuellen Account
+    GROUP BY account_id, TO_CHAR(DATE_TRUNC('week', created_date::DATE), 'YYYY-MM-DD')
+),
+weekly_data AS (
+    SELECT
+        calendar.week_date,
+        COALESCE(meeting.account_id, activity.account_id) AS account_id,
+        COALESCE(meeting.meeting_count, 0) AS weekly_meeting_count,
+        COALESCE(activity.total_calls, 0) AS total_calls,
+        COALESCE(activity.calls_over_10s, 0) AS calls_over_10s,
+        COALESCE(activity.calls_over_120s, 0) AS calls_over_120s
+    FROM calendar
+    LEFT JOIN meeting
+        ON calendar.week_date = meeting.week_date
+    LEFT JOIN activity
+        ON calendar.week_date = activity.week_date
+)
+SELECT
+    calendar.week_date,
+    COALESCE(weekly_data.account_id, '{{ Account_List.selectedRow.sf_account_id }}') AS account_id,
+    SUM(COALESCE(weekly_meeting_count, 0)) AS weekly_meeting_count,
+    SUM(COALESCE(total_calls, 0)) AS total_calls,
+    SUM(COALESCE(calls_over_10s, 0)) AS calls_over_10s,
+    SUM(COALESCE(calls_over_120s, 0)) AS calls_over_120s
+FROM calendar
+LEFT JOIN weekly_data
+    ON calendar.week_date = weekly_data.week_date
+GROUP BY calendar.week_date, weekly_data.account_id
+ORDER BY calendar.week_date ASC;

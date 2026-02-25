@@ -1,0 +1,57 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "alignWidget": "RIGHT",
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 8,
+  "defaultCheckedState": "{{  Array.isArray(GetAccountsSelected2.data.output.records) \n    ? GetAccountsSelected2.data.output.records.find(\n        row => row.Id.trim() === Account_List.selectedRow.sf_account_id.trim()\n      )?.ATS_Integrated__c || \"Nein\"\n    : \"Nein\"\n}}\n",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "defaultCheckedState"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [
+    {
+      "key": "defaultCheckedState"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "isDisabled": true,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "u45sa9z2cb",
+  "label": "",
+  "labelPosition": "Right",
+  "labelStyle": "BOLD",
+  "labelTextColor": "#18181b",
+  "leftColumn": 22,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 26,
+  "mobileLeftColumn": 32,
+  "mobileRightColumn": 44,
+  "mobileTopRow": 22,
+  "needsErrorInfo": false,
+  "originalBottomRow": 77,
+  "originalTopRow": 73,
+  "parentColumnSpace": 9.8974609375,
+  "parentId": "x9yzshdj2h",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 29,
+  "topRow": 4,
+  "type": "CHECKBOX_WIDGET",
+  "version": 1,
+  "widgetId": "tndngs300z",
+  "widgetName": "Checkbox1"
+}

@@ -1,0 +1,111 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "allowScroll": false,
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 22,
+  "boxShadow": "none",
+  "chartData": {
+    "jltdpc39w5": {
+      "data": "{{\n  Object.entries(\n    (Renewal_List.filteredTableData || Renewal_List.tableData || [])\n      .reduce((acc, r) => {\n        const k = (r.Status ?? '').toString().trim() || 'Unbekannt';\n        acc[k] = (acc[k] || 0) + 1;\n        return acc;\n      }, {})\n  )\n  .map(([x, y]) => ({\n    x,\n    y,\n    itemStyle: {\n      color: ({\n        'At Risk': '#ea4335',\n        'Low Risk': '#fbbc04',\n        'Closed Won': '#22b31e',\n        'Renewal Lost': '#A9A9A9'\n      }[x] || 'transparent')\n    }\n  }))\n  .sort((a,b) => b.y - a.y)\n}}\n",
+      "seriesName": ""
+    }
+  },
+  "chartName": "",
+  "chartType": "CUSTOM_ECHART",
+  "customEChartConfig": "{{ ((chartType) => ( \n(() => {\n  const raw = Renewal_List.filteredTableData || Renewal_List.tableData || [];\n  const data = raw\n    .filter(r => r.contract_expired_date)\n    .reduce((acc, r) => {\n      const dateObj = new Date(r.contract_expired_date);\n      \n      const year = dateObj.getFullYear();\n      const month = String(dateObj.getMonth() + 1).padStart(2, '0');\n      const monthKey = `${year}-${month}`;\n      \n      const rawStatus = (r.Status ?? '').toString().trim();\n      \n      // Wenn Status leer → prüfe days_until_expiration\n      let status;\n      if (!rawStatus) {\n        const daysUntil = r.days_until_expiration;\n        // Im Window (≤180) → To Assess\n        // Außerhalb Window (>180) → Upcoming\n        status = daysUntil <= 180 ? 'To Assess' : 'Upcoming';\n      } else {\n        status = rawStatus;\n      }\n      \n      if (!acc[monthKey]) acc[monthKey] = {};\n      acc[monthKey][status] = (acc[monthKey][status] || 0) + 1;\n      \n      return acc;\n    }, {});\n\n  const months = Object.keys(data).sort();\n  const statuses = ['Upcoming', 'To Assess', 'Low Risk', 'At Risk', 'Closed Won', 'Renewal Lost'];\n\n  const colors = {\n    'Upcoming': '#757575',       // Dunkleres Grau\n    'To Assess': '#BDBDBD',      // Hellgrau\n    'Low Risk': '#9ccc65',       // Hellgrün\n    'At Risk': '#e53935',        // Rot\n    'Closed Won': '#13734b',     // Dunkelgrün\n    'Renewal Lost': '#800020'    // Dunkelrot\n  };\n\n  // Calculate max value for dynamic y-axis interval\n  const maxValue = Math.max(...months.map(month => {\n    return statuses.reduce((sum, status) => sum + (data[month]?.[status] || 0), 0);\n  }));\n\n  // Dynamic interval based on max value\n  let yAxisInterval;\n  if (maxValue <= 30) {\n    yAxisInterval = 5;\n  } else if (maxValue <= 100) {\n    yAxisInterval = 20;\n  } else if (maxValue <= 200) {\n    yAxisInterval = 50;\n  } else {\n    yAxisInterval = 100;\n  }\n\n  return {\n    tooltip: { \n      trigger: 'axis', \n      axisPointer: { type: 'shadow' }\n    },\n    legend: { \n      data: statuses,\n      bottom: 0\n    },\n    grid: { \n      left: '3%', \n      right: '4%', \n      top: '3%',\n      bottom: '12%',\n      containLabel: true \n    },\n    xAxis: {\n      type: 'category',\n      data: months,\n      axisLabel: {\n        formatter: value => {\n          const [year, month] = value.split('-');\n          const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', \n                             'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];\n          return `${monthNames[parseInt(month) - 1]} ${year.slice(2)}`;\n        },\n        rotate: 45\n      }\n    },\n    yAxis: { \n      type: 'value',\n      interval: yAxisInterval,\n      minInterval: yAxisInterval\n    },\n    series: statuses.map(status => ({\n      name: status,\n      type: 'bar',\n      stack: 'total',\n      emphasis: { focus: 'series' },\n      itemStyle: { color: colors[status] || '#CCCCCC' },\n      label: {\n        show: true,\n        position: 'inside',\n        fontWeight: 'normal',\n        fontSize: 10,\n        color: status === 'Low Risk' || status === 'To Assess' ? '#000' : '#fff',\n        formatter: params => params.value >= 1 ? params.value : ''\n      },\n      data: months.map(month => (data[month]?.[status] ?? 0))\n    }))\n  };\n})()\n))(RiskTimelineChart.chartType) }}",
+  "customFusionChartConfig": {
+    "dataSource": {
+      "chart": {
+        "alignCaptionWithCanvas": 1,
+        "canvasPadding": "0",
+        "caption": "Sales Report",
+        "captionAlignment": "center",
+        "captionFontColor": "#231F20",
+        "captionFontSize": "24",
+        "captionPadding": "20",
+        "chartBottomMargin": "10",
+        "chartLeftMargin": "20",
+        "chartRightMargin": "40",
+        "chartTopMargin": "10",
+        "labelFontColor": "#716e6e",
+        "labelFontSize": "12",
+        "legendIconAlpha": "100",
+        "legendIconBgAlpha": "100",
+        "legendIconSides": "4",
+        "legendPosition": "top",
+        "theme": "fusion",
+        "xAxisName": "Product Line",
+        "xAxisNameFontColor": "#716e6e",
+        "xAxisNameFontSize": "14",
+        "yAxisName": "Revenue($)",
+        "yAxisNameFontColor": "#716e6e",
+        "yAxisNameFontSize": "14",
+        "yAxisValueFontColor": "#716e6e",
+        "yAxisValueFontSize": "12"
+      },
+      "data": [
+        {
+          "label": "Product1",
+          "value": 20000
+        },
+        {
+          "label": "Product2",
+          "value": 22000
+        },
+        {
+          "label": "Product3",
+          "value": 32000
+        }
+      ]
+    },
+    "type": "column2d"
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "chartData.jltdpc39w5.data"
+    },
+    {
+      "key": "customEChartConfig"
+    }
+  ],
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "flexVerticalAlignment": "start",
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "4tnoev0v85",
+  "labelOrientation": "auto",
+  "leftColumn": 13,
+  "minWidth": 450,
+  "mobileBottomRow": 30,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 19,
+  "mobileTopRow": 0,
+  "needsErrorInfo": true,
+  "parentColumnSpace": 19.607421875,
+  "parentId": "rq9u5fm8i5",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 47,
+  "setAdaptiveYMin": false,
+  "showDataPointLabel": false,
+  "topRow": 0,
+  "type": "CHART_WIDGET",
+  "version": 1,
+  "widgetId": "2ciiye0o8d",
+  "widgetName": "RiskTimelineChart",
+  "xAxisName": "",
+  "yAxisName": ""
+}

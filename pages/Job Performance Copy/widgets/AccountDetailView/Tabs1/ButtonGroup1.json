@@ -1,0 +1,82 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 21,
+  "boxShadow": "none",
+  "buttonVariant": "SECONDARY",
+  "childStylesheet": {
+    "button": {
+      "buttonColor": "{{appsmith.theme.colors.primaryColor}}"
+    }
+  },
+  "dynamicBindingPathList": [
+    {
+      "key": "borderRadius"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "groupButtons.groupButton1.onClick"
+    },
+    {
+      "key": "groupButtons.groupButton2.onClick"
+    }
+  ],
+  "groupButtons": {
+    "groupButton1": {
+      "buttonColor": "#22c55e",
+      "buttonType": "SIMPLE",
+      "disabledWhenInvalid": false,
+      "iconName": "tick-circle",
+      "id": "groupButton1",
+      "index": 0,
+      "isDisabled": false,
+      "isVisible": true,
+      "label": "Angewendet",
+      "menuItems": {},
+      "onClick": "{{InsertUserFeedbackTitle.run();}}",
+      "placement": "CENTER",
+      "widgetId": ""
+    },
+    "groupButton2": {
+      "buttonColor": "#ef4444",
+      "buttonType": "SIMPLE",
+      "disabledWhenInvalid": false,
+      "iconName": "disable",
+      "id": "groupButton2",
+      "index": 1,
+      "isDisabled": false,
+      "isVisible": true,
+      "label": "Nicht angewendet",
+      "menuItems": {},
+      "onClick": "{{showModal(Modal_JobRec_notapplied.name);}}",
+      "placement": "CENTER",
+      "widgetId": ""
+    }
+  },
+  "isCanvas": false,
+  "isLoading": false,
+  "isVisible": true,
+  "key": "0m7wzxhcbe",
+  "leftColumn": 41,
+  "minWidth": 450,
+  "mobileBottomRow": 36,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 17,
+  "mobileTopRow": 32,
+  "needsErrorInfo": false,
+  "orientation": "horizontal",
+  "originalBottomRow": 21,
+  "originalTopRow": 15,
+  "parentColumnSpace": 8.263397216796875,
+  "parentId": "ifu1phwe09",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "topRow": 15,
+  "type": "BUTTON_GROUP_WIDGET",
+  "version": 1,
+  "widgetId": "mtdlcpsslj",
+  "widgetName": "ButtonGroup1"
+}

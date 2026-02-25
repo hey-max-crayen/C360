@@ -1,0 +1,56 @@
+{
+  "animateLoading": true,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 8,
+  "boxShadow": "none",
+  "dynamicBindingPathList": [
+    {
+      "key": "text"
+    },
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "1rem",
+  "fontStyle": "BOLD",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "1yscwnbz3k",
+  "leftColumn": 45,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 8,
+  "mobileLeftColumn": 16,
+  "mobileRightColumn": 24,
+  "mobileTopRow": 4,
+  "needsErrorInfo": false,
+  "overflow": "NONE",
+  "parentId": "km6pnk4f76",
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "shouldTruncate": false,
+  "text": "{{\n  (() => {\n    var dropOffPercentage = Number(currentItem.drop_off_share_percentage) || 0;\n    var remainingPercentage = 100 - dropOffPercentage;\n\n    return '<div style=\"width:100%; padding:5px;\">' +\n           '<div style=\"display:flex; width:100%; height:30px; border:1px solid #ddd; overflow:hidden;\">' +\n           '<div style=\"width:' + dropOffPercentage + '%; height:100%; background:#ea4335; display:flex; align-items:center; justify-content:center; color:white; font-size:12px; font-weight:bold;\">' +\n           (dropOffPercentage > 8 ? dropOffPercentage + '%' : '') + '</div>' +\n           '<div style=\"width:' + remainingPercentage + '%; height:100%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; color:#333; font-size:12px; font-weight:bold;\">' +\n           (remainingPercentage > 8 ? remainingPercentage + '%' : '') + '</div>' +\n           '</div>' +\n           '<div style=\"text-align:center; margin-top:5px; font-size:11px; color:#666;\">' +\n           'Drop-off: ' + dropOffPercentage + '% | Beantwortet: ' + remainingPercentage + '%' +\n           '</div>' +\n           '</div>';\n  })()\n}}\n",
+  "textAlign": "CENTER",
+  "textColor": "",
+  "textStyle": "BODY",
+  "topRow": 2,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "5yc9kqxjde",
+  "widgetName": "DropOffInfo"
+}

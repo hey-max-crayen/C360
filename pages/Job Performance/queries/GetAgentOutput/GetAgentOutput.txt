@@ -1,0 +1,4 @@
+SELECT * FROM public."PerformanceAgentOutput"
+WHERE job_slot_id = '{{Job_List.selectedRow.job_slot_id}}'
+ORDER BY updated_at DESC
+LIMIT 1

@@ -1,0 +1,58 @@
+{
+  "animateLoading": true,
+  "backgroundColor": "",
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 14,
+  "dynamicBindingPathList": [
+    {
+      "key": "truncateButtonColor"
+    },
+    {
+      "key": "fontFamily"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "text"
+    }
+  ],
+  "dynamicHeight": "AUTO_HEIGHT",
+  "dynamicPropertyPathList": [],
+  "dynamicTriggerPathList": [],
+  "fontFamily": "{{appsmith.theme.fontFamily.appFont}}",
+  "fontSize": "0.875rem",
+  "fontStyle": "",
+  "isLoading": false,
+  "isVisible": true,
+  "key": "mwhhxojubz",
+  "leftColumn": 0,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 15,
+  "mobileLeftColumn": 0,
+  "mobileRightColumn": 16,
+  "mobileTopRow": 11,
+  "needsErrorInfo": false,
+  "originalBottomRow": 12,
+  "originalTopRow": 4,
+  "overflow": "NONE",
+  "parentColumnSpace": 12.6435546875,
+  "parentId": "tm4kyt7x1h",
+  "parentRowSpace": 10,
+  "renderMode": "CANVAS",
+  "responsiveBehavior": "fill",
+  "rightColumn": 64,
+  "shouldScrollContents": true,
+  "shouldTruncate": false,
+  "text": "{{\n  \"<div style='line-height: 1.5; margin: 0; padding: 0;'>\" + \n  GetAgentOutput.data[0]?.recommendations_quantity_easy_apply\n    .split('\\n\\n').map(paragraph => \n      '<p style=\"margin: 0; padding: 0;\">' + \n      paragraph.replace(/\\n/g, '<br>').replace(/• /g, '• <span style=\"padding-left: 15px; display: inline-block; text-indent: -15px;\">') + \n      '</span></p>'\n    ).join('') + \n  \"</div>\"\n}}\n\n",
+  "textAlign": "LEFT",
+  "textColor": "#231F20",
+  "topRow": 4,
+  "truncateButtonColor": "{{appsmith.theme.colors.primaryColor}}",
+  "type": "TEXT_WIDGET",
+  "version": 1,
+  "widgetId": "3gctiejmwq",
+  "widgetName": "Text38CopyCopyCopyCopyCopyCopyCopyCopy"
+}

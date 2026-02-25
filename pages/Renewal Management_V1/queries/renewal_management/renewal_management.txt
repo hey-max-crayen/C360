@@ -1,0 +1,36 @@
+SELECT *
+FROM snowplow.bi_analytics_dbt.sf_opportunities_renewal
+WHERE
+  contract_expired_date::date BETWEEN 
+    to_date('{{ moment(ContractDateFrom.selectedDate).format("YYYY-MM-DD") }}','YYYY-MM-DD')
+    AND to_date('{{ moment(ContractDateTo.selectedDate).format("YYYY-MM-DD") }}','YYYY-MM-DD')
+
+  -- InputMotion (with Mapping)
+  AND (
+    {{!InputMotion.selectedOptionValue}}
+    OR (
+      {{ InputMotion.selectedOptionValue === 'Subscription ACM' }}
+      AND account_owner_gtm_motion IN ('Subscription Expansion','Subscription Retention')
+    )
+    OR (
+      {{ InputMotion.selectedOptionValue === 'Enterprise' }}
+      AND account_owner_gtm_motion IN ('Enterprise Expansion','Enterprise Retention')
+    )
+    OR (
+      account_owner_gtm_motion = '{{ InputMotion.selectedOptionValue.replaceAll("'", "''") }}'
+    )
+  )
+
+  -- InputTeam → manager (optional)
+  AND (
+    {{!InputTeam.selectedOptionValue}}
+    OR manager = '{{ InputTeam.selectedOptionValue.replaceAll("'", "''") }}'
+  )
+
+  -- InputUser → account_owner_name (optional; falls doch gtm_motion gewünscht, unten anpassen)
+  AND (
+    {{!InputName.selectedOptionValue}}
+    OR account_owner_name = '{{ InputName.selectedOptionValue.replaceAll("'", "''") }}'
+  )
+
+ORDER BY contract_expired_date ASC;

@@ -1,0 +1,7 @@
+SET TIME ZONE 'Europe/Berlin';
+
+UPDATE public."PerformanceAgentOutput"
+SET 
+  recommendation_status_rating = {{TotalRatingScore.value}},
+  recommendation_status_comment = {{TotalRatingFeedback.text}}
+WHERE id = {{CurrentAgentOutputID.text}};

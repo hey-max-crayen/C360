@@ -1,0 +1,8 @@
+--An examaple,  drop off exist
+SELECT *
+FROM bi_analytics_dbt.drop_off_share_screening_questions_nlo_hire_reach_exist
+WHERE 1
+  AND q_applicable = 'applicable'
+  AND job_slot_id = {{Job_List.selectedRow.job_slot_id}}
+ORDER BY job_slot_id, q_sorting_position_existing_today
+;

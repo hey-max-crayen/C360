@@ -1,0 +1,4 @@
+{
+		"job_id" : "{{ Job_List.selectedRow.job_id }}" ,
+		"jobslot_id" : "{{ Job_List.selectedRow.job_slot_id }}"
+}
